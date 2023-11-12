@@ -18,5 +18,17 @@
         "react"
     ],
     "rules": {
-    }
+    },
+    "settings": {
+        "react": {
+          "version": "detect"
+        }
+      },
+    "ignorePatterns": [
+        "node_modules/",
+        "dist/",
+        "*.css",
+        "*.scss",
+        "*.svg"
+    ]
 }
