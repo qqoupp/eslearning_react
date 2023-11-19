@@ -1,10 +1,22 @@
 import React from "react";
+import MenuIcon from '@mui/icons-material/Menu';
+import { Close } from "@mui/icons-material";
 
-const HeaderMenu = () => {  
+type HeaderMenuProps = {
+    onClick?: () => void;
+    open?: boolean;
+};
+
+const HeaderMenu = (props:HeaderMenuProps) => {  
+
+    const { onClick, open } = props;
 
     return (
-        <div className="flex justify-between">
-            Menu
+        <div className="flex justify-between cursor-pointer"
+            onClick={onClick}
+        >   
+            {open ? <Close /> : <MenuIcon />}
+            
         </div>
     );
     
