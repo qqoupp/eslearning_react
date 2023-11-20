@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from "../Logo";
 import HeaderMenu from "../HeaderMenu";
-import { Drawer } from "@mui/material";
+import { Drawer, List, ListItem, Paper } from "@mui/material";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 
 const Header: React.FC = () => {
@@ -21,18 +21,25 @@ const Header: React.FC = () => {
           mouseEvent="onMouseDown"
           touchEvent="onTouchStart"
         >
-          <div className="px-5 py-4 min-h-screen">
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-col">
-                <span className="text-sm">Welcome</span>
-                <span className="text-xl font-bold">John Doe</span>
+          <Paper style={{ background: 'linear-gradient(to right, rgba(23, 56, 56, 0.1), rgba(0, 128, 128, 0.1))' }}>
+          <div className="px-5 py-7 min-h-screen">
+            <div className="flex flex-col justify-between gap-y-5">
+              <div className="flex flex-row">
+                <span className="font-bold text-xl text-emerald-600">Elevate</span>
+                <span className="font-bold text-xl text-emerald-800/75">Stack</span>
+                <span className="font-bold text-xl text-emerald-800/50">Learning</span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm">Your score</span>
-                <span className="text-xl font-bold">100</span>
+              <div className="flex flex-col align-items-centre">
+                <List>
+                  <ListItem button className="text-xl gap-y-5">Sign In</ListItem>
+                  <ListItem button className="text-xl gap-y-5">Sign Up</ListItem>
+                  <ListItem button className="text-xl gap-y-5">About</ListItem>
+                  <ListItem button className="text-xl gap-y-5">Contact</ListItem>
+                </List>
               </div>
             </div>
           </div>
+          </Paper>
         </ClickAwayListener>
       </Drawer>
       <div className="py-6 border-b flex flex-row justify-between">
@@ -43,7 +50,7 @@ const Header: React.FC = () => {
           open={open}
         />
         <Logo />
-        <div></div>
+        <div>User Icon</div>
       </div>
     </>
   );
