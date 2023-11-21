@@ -12,10 +12,10 @@ const HeaderMenu = (props:HeaderMenuProps) => {
     const { onClick, open } = props;
 
     return (
-        <div className="flex justify-between cursor-pointer"
+        <div className="flex justify-between cursor-pointer pt-4"
             onClick={onClick}
         >   
-            {open ? <Close /> : <MenuIcon />}
+            {open ? <Close /> : <MenuIcon/>}
             
         </div>
     );
