@@ -26,21 +26,18 @@ const Header: React.FC = () => {
         >
           <Paper
             style={{
-              background:'#424242',
+              background:'#001524',
               color: 'white', 
             }}
           >
             <div className="px-5 py-7 min-h-screen">
               <div className="flex flex-col justify-between gap-y-5">
-                <div className="flex flex-row">
+                <div className="flex flex-col gap-0">
                   <span className="font-bold text-xl text-emerald-600">
                     Elevate
                   </span>
-                  <span className="font-bold text-xl text-emerald-800/75">
-                    Stack
-                  </span>
-                  <span className="font-bold text-xl text-emerald-800/50">
-                    Learning
+                  <span className="font-bold text-xl text-emerald-800">
+                    StackLearning
                   </span>
                 </div>
                 <div className="flex flex-col align-items-centre">

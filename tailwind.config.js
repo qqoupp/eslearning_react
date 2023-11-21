@@ -3,10 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      scale: {
-        '55': '0.55', // Custom scale of 55%
-      },
+      colors: {
+        'costum':'#001524',
     },
   },
   plugins: [],
-};
+}};

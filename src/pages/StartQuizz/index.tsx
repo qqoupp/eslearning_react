@@ -2,6 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import CustomCard from "./Cards";
 import { Typography } from "@mui/material";
+import Image from "./Images";
 
 const cardData = [
   {
@@ -111,20 +112,20 @@ const StartQuizz: React.FC = () => {
       </Typography>
         </Grid>
         <Grid item xs={6} md={4}>
-          image placeholder
+          <Image/>
         </Grid>
       </Grid>
 
       <div className="pt-16 pb-16">
         <button
           type="submit"
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
           Try it out
         </button>
       </div>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={0.5}>
         {cardData.map((data, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <CustomCard {...data} />
@@ -134,7 +135,7 @@ const StartQuizz: React.FC = () => {
       <div className="pt-16 pb-16">
         <button
           type="submit"
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
           Try it out
         </button>

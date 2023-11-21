@@ -45,10 +45,10 @@ const CustomCard: React.FC<CardProps> = ({
   return (
     <Card sx={{ 
         maxWidth: 345, 
-        backgroundColor: '#424242', // Dark grey background
-        color: 'white', // White text color
-        borderRadius: '8px', // Rounded corners
-        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.5)' // Shadow for depth
+        backgroundColor: '#001524', 
+        color: 'white', 
+        borderRadius: '8px', 
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.5)' 
       }}>
       <CardHeader
         title={title}
@@ -69,6 +69,7 @@ const CustomCard: React.FC<CardProps> = ({
               onClick={handleExpandClick}
               aria-expanded={expanded}
               aria-label="show more"
+                style={{ color: 'white' }}
             >
               <ExpandMoreIcon />
             </ExpandMore>
