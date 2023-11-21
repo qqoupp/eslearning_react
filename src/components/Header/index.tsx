@@ -47,7 +47,7 @@ const Header: React.FC = () => {
                   <List>
                     <ListItem
                       button
-                      className="text-xl gap-y-5"
+                      className="text-xl gap-y-5 pt-9"
                       onClick={() => handleNavigate("/signin")}
                     >
                       Sign In
