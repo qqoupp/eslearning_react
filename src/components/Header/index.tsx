@@ -26,8 +26,8 @@ const Header: React.FC = () => {
         >
           <Paper
             style={{
-              background:
-                "linear-gradient(to right, rgba(23, 56, 56, 0.1), rgba(0, 128, 128, 0.1))",
+              background:'#424242',
+              color: 'white', 
             }}
           >
             <div className="px-5 py-7 min-h-screen">
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
                   <List>
                     <ListItem
                       button
-                      className="text-xl gap-y-5 pt-9"
+                      className="text-xl gap-y-5"
                       onClick={() => handleNavigate("/signin")}
                     >
                       Sign In
