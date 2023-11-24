@@ -6,7 +6,7 @@ import { Drawer, List, ListItem, Paper } from "@mui/material";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 
 const Header: React.FC = () => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => {

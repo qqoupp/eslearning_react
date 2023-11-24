@@ -96,14 +96,15 @@ const cardData = [
     expandableContent:
       "React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces. Use a little—or a lot. You can use React Native today in your existing Android and iOS projects or you can create a whole new app from scratch.",
   },
-];
-
+];  
 const StartQuizz: React.FC = () => {
   return (
     <div className="pt-20">
       <Grid container spacing={2}>
         <Grid item xs={6} md={8}>
-          <Typography variant="h4" className="pt-9 text-justify">
+            <Typography variant="h2" className="text-justify">
+                Elevate Stack Learning</Typography>
+          <Typography variant="h4" className="pt-9 text-justify" >
             Welcome to E.S.L., your hub for navigating the modern landscape of
             web development technologies. Our mission is to empower developers
             with comprehensive guides, in-depth tutorials, and the latest
@@ -117,7 +118,7 @@ const StartQuizz: React.FC = () => {
         </Grid>
       </Grid>
 
-      <div className="pt-16 pb-16">
+      <div className="pt-16 pb-16 align-middle">
         <Link to={"/signin"}>
           <button
             type="submit"
