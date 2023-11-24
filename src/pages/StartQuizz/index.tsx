@@ -1,8 +1,9 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import CustomCard from "./Cards";
+import CustomCard from "../../components/Cards";
 import { Typography } from "@mui/material";
-import Image from "./Images";
+import Image from "../../components/Images";
+import { Link } from "react-router-dom";
 
 const cardData = [
   {
@@ -102,27 +103,29 @@ const StartQuizz: React.FC = () => {
     <div className="pt-20">
       <Grid container spacing={2}>
         <Grid item xs={6} md={8}>
-        <Typography variant="h4" className=" text-justify">
-        Welcome to E.S.L., your hub for navigating the modern landscape of web
-        development technologies. Our mission is to empower developers with
-        comprehensive guides, in-depth tutorials, and the latest industry
-        insights. Whether you&apos;re a seasoned coder or just starting out, our
-        resources are tailored to accelerate your learning and enhance your
-        projects.
-      </Typography>
+          <Typography variant="h4" className="pt-9 text-justify">
+            Welcome to E.S.L., your hub for navigating the modern landscape of
+            web development technologies. Our mission is to empower developers
+            with comprehensive guides, in-depth tutorials, and the latest
+            industry insights. Whether you&apos;re a seasoned coder or just
+            starting out, our resources are tailored to accelerate your learning
+            and enhance your projects.
+          </Typography>
         </Grid>
         <Grid item xs={6} md={4}>
-          <Image/>
+          <Image />
         </Grid>
       </Grid>
 
       <div className="pt-16 pb-16">
-        <button
-          type="submit"
-          className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          Try it out
-        </button>
+        <Link to={"/signin"}>
+          <button
+            type="submit"
+            className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          >
+            Try it out
+          </button>
+        </Link>
       </div>
 
       <Grid container spacing={0.5}>
@@ -133,12 +136,14 @@ const StartQuizz: React.FC = () => {
         ))}
       </Grid>
       <div className="pt-16 pb-16">
-        <button
-          type="submit"
-          className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          Try it out
-        </button>
+        <Link to={"/signin"}>
+          <button
+            type="submit"
+            className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          >
+            Try it out
+          </button>
+        </Link>
       </div>
     </div>
   );
