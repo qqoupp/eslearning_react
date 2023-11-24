@@ -118,7 +118,7 @@ const StartQuizz: React.FC = () => {
         </Grid>
       </Grid>
 
-      <div className="pt-16 pb-16 align-middle">
+      <div className="pt-16 pb-16 ">
         <Link to={"/signin"}>
           <button
             type="submit"

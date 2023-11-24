@@ -4,6 +4,7 @@ import HeaderMenu from "../HeaderMenu";
 import { useNavigate } from "react-router-dom";
 import { Drawer, List, ListItem, Paper } from "@mui/material";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
+import ProfileMenu from "../ProfileMenu";
 
 const Header: React.FC = () => {
   const [open, setOpen] = React.useState(false);
@@ -77,7 +78,7 @@ const Header: React.FC = () => {
           open={open}
         />
         <Logo />
-        <div>User Icon</div>
+        <ProfileMenu/>
       </div>
     </>
   );
