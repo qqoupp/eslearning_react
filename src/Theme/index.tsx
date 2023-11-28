@@ -8,9 +8,10 @@ const theme = createTheme({
   },
   palette: {
     background: {
-        default: '#E2EFDA',
+        default: '#F5F5F5',
         
     },
+
 },
 });
 

@@ -33,8 +33,8 @@ const Header: React.FC = () => {
           >
             <div className="px-5 py-7 min-h-screen">
               <div className="flex flex-col justify-between gap-y-5">
-                <div className="flex flex-col gap-0">
-                  <span className="font-bold text-xl text-emerald-100">
+                <div className="flex flex-col pb-40 gap-0">
+                  <span className="font-bold text-xl text-white">
                     Elevate
                   </span>
                   <span className="font-bold text-xl text-emerald-200">
