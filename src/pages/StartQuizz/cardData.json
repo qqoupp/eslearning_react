@@ -1,0 +1,241 @@
+[{
+    "title": "React",
+    "subheader": "Frontend Library",
+    "content": "A JavaScript library for building user interfaces.",
+    "expandableContent":
+      "React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes."
+  },
+
+  {
+    "title": "Node.js",
+    "subheader": "Backend Runtime",
+    "content": "A JavaScript runtime built on Chrome's V8 JavaScript engine.",
+    "expandableContent":
+      "Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices."
+  },
+  {
+    "title": "Angular",
+    "subheader": "Frontend Framework",
+    "content": "A platform for building mobile and desktop web applications.",
+    "expandableContent":
+      "Angular combines declarative templates, dependency injection, end to end tooling, and integrated best practices to solve development challenges."
+  },
+  {
+    "title": "Django",
+    "subheader": "Backend Framework",
+    "content":
+      "A high-level Python Web framework that encourages rapid development and clean, pragmatic design.",
+    "expandableContent":
+      "Built by experienced developers, Django takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel."
+  },
+  {
+    "title": "Vue.js",
+    "subheader": "Frontend Framework",
+    "content": "The Progressive JavaScript Framework.",
+    "expandableContent":
+      "Vue.js is designed from the ground up to be incrementally adoptable. The core library focuses on the view layer only, and is easy to pick up and integrate with other libraries or existing projects."
+  },
+  {
+    "title": "PostgreSQL",
+    "subheader": "Database System",
+    "content": "An advanced open source relational database.",
+    "expandableContent":
+      "PostgreSQL offers sophisticated features such as Multi-Version Concurrency Control (MVCC), point in time recovery, tablespaces, and more. It's known for its stability and robustness."
+  },
+  {
+    "title": "Flask",
+    "subheader": "Backend Framework",
+    "content": "A lightweight WSGI web application framework in Python.",
+    "expandableContent":
+      "Flask is designed to be easy to use and extend, making it a great choice for building simple web applications and rapid prototyping in Python."
+  },
+  {
+    "title": "Docker",
+    "subheader": "Containerization Platform",
+    "content":
+      "A platform for developing, shipping, and running applications in containers.",
+    "expandableContent":
+      "Docker enables you to separate your applications from your infrastructure so you can deliver software quickly. Containers are lightweight and provide a consistent, portable software environment."
+  },
+  {
+    "title": "Kubernetes",
+    "subheader": "Container Orchestration",
+    "content":
+      "An open-source system for automating deployment, scaling, and management of containerized applications.",
+    "expandableContent":
+      "Kubernetes provides a framework to run distributed systems resiliently, scaling up or down as needed, handling failover, and providing deployment patterns like canaries."
+  },
+  {
+    "title": "TensorFlow",
+    "subheader": "Machine Learning Library",
+    "content":
+      "An open source library for numerical computation and machine learning.",
+    "expandableContent":
+      "TensorFlow offers a comprehensive ecosystem of tools, libraries, and community resources that lets researchers push the state-of-the-art in ML, and developers easily build and deploy ML-powered applications."
+  },
+  {
+    "title": "AWS",
+    "subheader": "Cloud Computing Platform",
+    "content":
+      "A subsidiary of Amazon providing on-demand cloud computing platforms.",
+    "expandableContent":
+      "AWS offers a broad set of global cloud-based products including compute, storage, databases, analytics, networking, mobile, developer tools, management tools, IoT, security, and enterprise applications."
+  },
+  {
+    "title": "React Native",
+    "subheader": "Mobile Framework",
+    "content": "A framework for building native apps using React.",
+    "expandableContent":
+      "React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces. Use a little—or a lot. You can use React Native today in your existing Android and iOS projects or you can create a whole new app from scratch."
+  },
+  {
+    "title": "GraphQL",
+    "subheader": "Query Language",
+    "content": "A query language for your API, and a server-side runtime for executing queries.",
+    "expandableContent": "GraphQL provides a more efficient, powerful and flexible alternative to REST. It allows clients to define the structure of the data required, and the same structure of the data is returned from the server."
+  },
+  {
+    "title": "Redux",
+    "subheader": "State Management Library",
+    "content": "A predictable state container for JavaScript apps.",
+    "expandableContent": "Redux helps you write applications that behave consistently, run in different environments, and are easy to test. It provides a central store for state that needs to be used across your entire application."
+  },
+  {
+    "title": "Spring Boot",
+    "subheader": "Backend Framework",
+    "content": "An extension of the Spring platform which simplifies the initial setup of Spring-based applications.",
+    "expandableContent": "Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can just run. It takes an opinionated view of the Spring platform, which paves the way for faster and more efficient development."
+  },
+  {
+    "title": "MongoDB",
+    "subheader": "NoSQL Database",
+    "content": "A document-based, distributed database built for modern application developers.",
+    "expandableContent": "MongoDB is a NoSQL database that offers high performance, high availability, and easy scalability. It works on the concept of collections and documents and allows storing data in a flexible, JSON-like format."
+  },
+  {
+    "title": "Apache Kafka",
+    "subheader": "Event Streaming Platform",
+    "content": "An open-source stream-processing software platform developed by LinkedIn and donated to the Apache Software Foundation.",
+    "expandableContent": "Kafka is used for building real-time data pipelines and streaming apps. It is horizontally scalable, fault-tolerant, wicked fast, and runs in production in thousands of companies."
+  },
+  {
+    "title": "Svelte",
+    "subheader": "Frontend Framework",
+    "content": "A radical new approach to building user interfaces.",
+    "expandableContent": "Unlike traditional frameworks like React and Vue, Svelte shifts much of the work into a compile step that happens when you build your app. This results in smaller, faster to load runtime code."
+  },
+  {
+    "title": "Laravel",
+    "subheader": "Web Application Framework",
+    "content": "A PHP framework for web artisans, focused on elegant syntax and simplicity.",
+    "expandableContent": "Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching."
+  },
+  {
+    "title": "Electron",
+    "subheader": "Desktop Application Framework",
+    "content": "A framework for creating native applications with web technologies like JavaScript, HTML, and CSS.",
+    "expandableContent": "Electron allows for the development of desktop GUI applications using web technologies. It combines the Chromium rendering engine and the Node.js runtime."
+  },
+  {
+    "title": "Gatsby",
+    "subheader": "Static Site Generator",
+    "content": "A React-based open-source framework for creating websites and apps.",
+    "expandableContent": "Gatsby is designed to help developers build performant websites and apps. It's known for efficient page loading, data prefetching, and automated code splitting."
+  },
+  {
+    "title": "Next.js",
+    "subheader": "React Framework",
+    "content": "A framework for server-rendered or statically-exported React apps.",
+    "expandableContent": "Next.js gives you the best developer experience with all the features you need for production: hybrid static & server rendering, TypeScript support, smart bundling, and more."
+  },
+  {
+    "title": "TypeScript",
+    "subheader": "Programming Language",
+    "content": "An open-source language which builds on JavaScript by adding static type definitions.",
+    "expandableContent": "TypeScript allows developers to use highly-productive development tools and practices like static checking and code refactoring when developing JavaScript applications."
+  },
+  {
+    "title": "Swift",
+    "subheader": "Programming Language",
+    "content": "A powerful and intuitive programming language for macOS, iOS, watchOS, and tvOS.",
+    "expandableContent": "Swift is easy to learn and use and it’s open source, so it’s continually improved by a broad community of developers. Swift is designed to work with Apple's Cocoa and Cocoa Touch frameworks."
+  },
+  {
+    "title": "Rust",
+    "subheader": "Programming Language",
+    "content": "A language empowering everyone to build reliable and efficient software.",
+    "expandableContent": "Rust is known for its safety and performance, great documentation, and a friendly compiler with useful error messages and integrated tooling."
+  },
+  {
+    "title": "Go",
+    "subheader": "Programming Language",
+    "content": "An open source programming language that makes it easy to build simple, reliable, and efficient software.",
+    "expandableContent": "Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency."
+  },
+  {
+    "title": "Ruby on Rails",
+    "subheader": "Web Application Framework",
+    "content": "A server-side web application framework written in Ruby under the MIT License.",
+    "expandableContent": "Rails is a model–view–controller (MVC) framework, providing default structures for a database, a web service, and web pages. It encourages and facilitates the use of web standards."
+  },
+  {
+    "title": "Bootstrap",
+    "subheader": "Frontend Framework",
+    "content": "The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile-first projects on the web.",
+    "expandableContent": "Bootstrap is an open-source toolkit for developing with HTML, CSS, and JS. Quickly prototype your ideas or build your entire app with a responsive grid system, extensive prebuilt components, and powerful plugins."
+  },
+  {
+    "title": "Git",
+    "subheader": "Version Control System",
+    "content": "A free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.",
+    "expandableContent": "Git is easy to learn and has a tiny footprint with lightning-fast performance. It outclasses SCM tools like Subversion, CVS, Perforce, and ClearCase with features like cheap local branching, convenient staging areas, and multiple workflows."
+  },
+  {
+    "title": "Python",
+    "subheader": "Programming Language",
+    "content": "A high-level, interpreted, and general-purpose dynamic programming language that focuses on code readability.",
+    "expandableContent": "Python's simple, easy to learn syntax emphasizes readability and therefore reduces the cost of program maintenance. Python supports multiple programming paradigms, including structured, object-oriented, and functional programming."
+  },
+  {
+    "title": "Java",
+    "subheader": "Programming Language",
+    "content": "A high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
+    "expandableContent": "Java is a general-purpose programming language intended to let application developers write once, run anywhere (WORA), meaning that compiled Java code can run on all platforms that support Java without the need for recompilation."
+  },
+  {
+    "title": "C#",
+    "subheader": "Programming Language",
+    "content": "A modern, object-oriented, and type-safe programming language.",
+    "expandableContent": "C# has its roots in the C family of languages and will be immediately familiar to C, C++, and Java programmers. It is used to develop desktop applications, web services, web applications, and mobile applications."
+  },
+  {
+    "title": "Sass",
+    "subheader": "CSS Preprocessor",
+    "content": "A preprocessor scripting language that is interpreted or compiled into Cascading Style Sheets (CSS).",
+    "expandableContent": "Sass allows you to use variables, nested rules, mixins, functions, and more, all with a fully CSS-compatible syntax. Sass helps keep large stylesheets well-organized and makes it easy to share design within and across projects."
+  },
+  {
+    "title": "Webpack",
+    "subheader": "Module Bundler",
+    "content": "A static module bundler for modern JavaScript applications.",
+    "expandableContent": "When webpack processes your application, it internally builds a dependency graph which maps every module your project needs and generates one or more bundles."
+  },
+  {
+    "title": "Babel",
+    "subheader": "JavaScript Compiler",
+    "content": "A toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards-compatible version of JavaScript.",
+    "expandableContent": "Babel can transform syntax, polyfill features that are missing in your target environment, source code transformations, and more."
+  },
+  {
+    "title": "Jenkins",
+    "subheader": "Automation Server",
+    "content": "An open-source automation server that enables developers around the world to reliably build, test, and deploy their software.",
+    "expandableContent": "Jenkins can be used as a simple CI server or turned into the continuous delivery hub for any project."
+  },
+  {
+    "title": "Prometheus",
+    "subheader": "Monitoring System",
+    "content": "An open-source systems monitoring and alerting toolkit.",
+    "expandableContent": "Prometheus's main features are a multi-dimensional data model with time series data identified by metric name and key/value pairs, a flexible query language, and no reliance on distributed storage."
+  }
+]

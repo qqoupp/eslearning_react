@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 const StartQuizz = React.lazy(() => import("../pages/StartQuizz"));
 import Header from "../components/Header";
-import Profile from "../pages/Profile";
+const Profile = React.lazy(() => import("../pages/Profile"));
 const SignUp = React.lazy(() => import("../pages/SignUp"));
 const SignIn = React.lazy(() => import("../pages/SignIn"));
 
@@ -46,6 +46,7 @@ const MainRouter = () => {
               </>
             }
           />
+
         </Routes>
       </React.Suspense>
     </>
