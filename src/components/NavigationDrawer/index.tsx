@@ -41,6 +41,12 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) =>
                 </div>
                 <div className="flex flex-col align-items-centre">
                   <List>
+                  <ListItem button className="text-xl gap-y-5">
+                      Project Guide
+                    </ListItem>
+                    <ListItem button className="text-xl gap-y-5">
+                      Project Ideea
+                    </ListItem>
                     <ListItem
                       button
                       className="text-xl gap-y-5"
