@@ -6,6 +6,7 @@ import Image from "../../components/Images";
 import { Link } from "react-router-dom";
 import cardData from "./cardData.json"; // Ensure the path is correct
 import Image2 from "../../components/Images/index2";
+import Image3 from "../../components/Images/index3";
 
 const StartQuizz: React.FC = () => {
   const [showPaper, setShowPaper] = useState(false);
@@ -73,8 +74,9 @@ const StartQuizz: React.FC = () => {
             Deciding on the right technology can be tricky with so many options
             out there. Our website is here to help. We showcase a selection of
             popular technologies across different areas like frontend, backend,
-            and databases. It&apos;s a quick way to get familiar with what&apos;s
-            available and find what might work best for your projects
+            and databases. It&apos;s a quick way to get familiar with
+            what&apos;s available and find what might work best for your
+            projects
           </Typography>
 
           <div className="pt-16 pb-16">
@@ -118,16 +120,35 @@ const StartQuizz: React.FC = () => {
               </Grid>
             </div>
           </Paper>
-          <div className="pt-16 pb-16">
-            <Link to={"/signin"}>
-              <button
-                type="submit"
-                className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={8}>
+              <Typography
+                variant="h4"
+                sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" } }}
+                className="pt-9"
+                paddingTop={15}
               >
-                Try it out
-              </button>
-            </Link>
-          </div>
+                Ready to dive deeper? Ty our guide creator to bring your project
+                to life. It&apos;s quick, easy, and tailored to your needs. Start
+                building now!
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <div className="pr-12">
+              <Image3/>
+              </div>
+              <div className=" pb-16 pl-20">
+                <Link to={"/signin"}>
+                  <button
+                    type="submit"
+                    className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                  >
+                    Try it out
+                  </button>
+                </Link>
+              </div>
+            </Grid>
+          </Grid>
         </div>
       )}
     </div>
