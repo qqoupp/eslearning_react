@@ -1,13 +1,13 @@
 import React from "react";
-import MenuIcon from '@mui/icons-material/Menu';
 import { Close } from "@mui/icons-material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-type HeaderMenuProps = {
+type AccountMenuProps = {
     onClick?: () => void;
     open?: boolean;
 };
 
-const HeaderMenu = (props:HeaderMenuProps) => {  
+const AccountMenu = (props:AccountMenuProps) => {  
 
     const { onClick, open } = props;
 
@@ -15,11 +15,11 @@ const HeaderMenu = (props:HeaderMenuProps) => {
         <div className="flex justify-between cursor-pointer pt-4"
             onClick={onClick}
         >   
-            {open ? <Close /> : <MenuIcon/>}
+            {open ? <Close /> : <AccountCircleIcon fontSize="large"/>}
             
         </div>
     );
     
 };
 
-export default HeaderMenu;
+export default AccountMenu;
