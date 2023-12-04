@@ -8,13 +8,8 @@ import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { CardDataProps } from '../../pages/StartQuizz/index';
 
-interface CardProps {
-  title: string;
-  subheader: string;
-  content: string;
-  expandableContent?: string; // Optional in case some cards do not have expandable content
-}
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -31,11 +26,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const CustomCard: React.FC<CardProps> = ({
-  title,
-  subheader,
-  content,
-  expandableContent
+const CustomCard: React.FC<CardDataProps> = ({
+  name,
+  type,
+  description,
+  short_description,
 }) => {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -51,17 +46,17 @@ const CustomCard: React.FC<CardProps> = ({
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.5)' 
       }}>
       <CardHeader
-        title={title}
-        subheader={subheader}
+        title={name}
+        subheader={type}
         titleTypographyProps={{ style: { color: 'white' } }} 
         subheaderTypographyProps={{ style: { color: 'white' } }}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary" style={{ color: 'white' }}>
-          {content}
+          {short_description}
         </Typography>
       </CardContent>
-      {expandableContent && (
+      {description && (
         <>
           <CardActions disableSpacing>
             <ExpandMore
@@ -76,7 +71,7 @@ const CustomCard: React.FC<CardProps> = ({
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-              <Typography paragraph sx={{ color: 'white' }} >{expandableContent}</Typography>
+              <Typography paragraph sx={{ color: 'white' }} >{description}</Typography>
             </CardContent>
           </Collapse>
         </>

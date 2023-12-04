@@ -1,22 +1,42 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid";
 import CustomCard from "../../components/Cards";
 import { Paper, Tab, Tabs, Typography } from "@mui/material";
 import Image from "../../components/Images";
 import { Link } from "react-router-dom";
-import cardData from "./cardData.json"; // Ensure the path is correct
 import Image2 from "../../components/Images/index2";
 import Image3 from "../../components/Images/index3";
+import { type } from "os";
+
+export type CardDataProps = {
+  name: string;
+  type: string;
+  description: string;
+  short_description: string;  
+};
 
 const StartQuizz: React.FC = () => {
   const [showPaper, setShowPaper] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [cardData, setCardData] = useState<CardDataProps[] | undefined>();
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:6300/api/v1/technologies");
+      const data = await response.json();
+      setCardData(data);
+    };
+    fetchData();
+
+  }, []);
+
 
   // Extract unique subheaders and create a 'All' category
   const subheaders = useMemo(() => {
-    const headers = new Set(cardData.map((card) => card.subheader));
+    const headers = new Set(cardData?.map((card) => card.type));
     return ["All", ...Array.from(headers)];
-  }, []);
+  }, [cardData]);
 
   // Handle tab change
   const handleTabChange = (
@@ -26,10 +46,10 @@ const StartQuizz: React.FC = () => {
     setActiveTab(newValue);
   };
   // Filter cards based on selected tab
-  const filteredCards = cardData.filter(
+  const filteredCards = cardData?.filter(
     (card) =>
       subheaders[activeTab] === "All" ||
-      card.subheader === subheaders[activeTab]
+      card.type === subheaders[activeTab]
   );
 
   return (
@@ -112,7 +132,7 @@ const StartQuizz: React.FC = () => {
           >
             <div className="">
               <Grid container spacing={0.5}>
-                {filteredCards.map((data, index) => (
+                {filteredCards?.map((data, index) => (
                   <Grid item xs={12} sm={6} md={4} key={index}>
                     <CustomCard {...data} />
                   </Grid>
