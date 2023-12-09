@@ -8,7 +8,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CardDataProps } from '../../pages/StartQuizz/index';
+import { CardDataProps } from '../../pages/LandingPage/index';
 
 
 interface ExpandMoreProps extends IconButtonProps {
