@@ -15,7 +15,7 @@ export type CardDataProps = {
   short_description: string;  
 };
 
-const StartQuizz: React.FC = () => {
+const LandingPage: React.FC = () => {
   const [showPaper, setShowPaper] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [cardData, setCardData] = useState<CardDataProps[] | undefined>();
@@ -175,4 +175,4 @@ const StartQuizz: React.FC = () => {
   );
 };
 
-export default StartQuizz;
+export default LandingPage;
