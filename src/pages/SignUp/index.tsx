@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const SignUp = () => {
-  const [formData, setFormData] = React.useState<{ email: string; password: string }>({ email: '', password: '' });
-  const [error, setError] = React.useState<string | null>("");
-  const [loading, setLoading] = React.useState(false);
+  
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState<string | null>("");
   const navigate = useNavigate();
+
   const handleChange = (e: { target: { id: any; value: any; }; }) => {
     setFormData({
       ...formData,
@@ -14,7 +15,6 @@ const SignUp = () => {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      setLoading(true);
       const res = await fetch('http://localhost:6300/api/v1/users', {
         method: 'POST',
         headers: {
@@ -25,15 +25,12 @@ const SignUp = () => {
       const data = await res.json();
       console.log(data);
       if (data.success === false) {
-        setLoading(false);
         setError(data.message);
         return;
       }
-      setLoading(false);
       setError(null);
       navigate('/signin');
     } catch (error) {
-      setLoading(false);
     
       if (error instanceof Error) {
         setError(error.message);
@@ -60,11 +57,11 @@ const SignUp = () => {
           id="password"
           onChange={handleChange}
         />
-        <button
-          disabled={loading}
-          className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
+         <button
+          type="submit"
+          className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          {loading ? 'Loading...' : 'Sign Up'}
+          Sign In
         </button>
       </form>
       <div className="flex gap-2 mt-5">
