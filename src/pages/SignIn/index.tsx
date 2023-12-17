@@ -1,40 +1,35 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useToast from "../../hooks/useToast";
+import { login } from "../../api/userApi";
 
 const SignIn = () => {
-  
+  const toast = useToast();
+
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>("");
   const navigate = useNavigate();
-  
-  const handleChange = (e: { target: { id: any; value: any; }; }) => {
+
+  const handleChange = (e: { target: { id: any; value: any } }) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:6300/api/v1/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message);
-        return;
-      }
+     
+      const data = await login(formData);
 
       setError(null);
-      navigate("/");
-      localStorage.setItem('token', data.token);
 
+      toast.success("Logged in successfully");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 5000);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -45,9 +40,10 @@ const SignIn = () => {
   };
 
   return (
-    
     <div className="p-3 max-w-lg mx-auto ">
-      <h1 className="text-3xl text-center font-semibold my-7 pr-12 ">Sign In</h1>
+      <h1 className="text-3xl text-center font-semibold my-7 pr-12 ">
+        Sign In
+      </h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 pr-12 ">
         <input
           type="email"
@@ -67,7 +63,7 @@ const SignIn = () => {
           type="submit"
           className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          Sign Up
+          Sign In
         </button>
       </form>
       <div className="flex gap-2 mt-5">
