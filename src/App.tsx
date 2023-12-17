@@ -6,13 +6,20 @@ import Container from "./components/Container";
 import { ThemeProvider } from "@mui/material/styles"; // Import ThemeProvider
 import theme from "./Theme/index"; // Import your custom theme
 import { CssBaseline } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import UserProvider from "./providers/userProvider";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container>
-        <MainRouter />
-      </Container>
+      <UserProvider>
+        <CssBaseline />
+        <Container>
+          <MainRouter />
+          <ToastContainer />
+        </Container>
+      </UserProvider>
     </ThemeProvider>
   );
 }

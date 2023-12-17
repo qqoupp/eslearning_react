@@ -1,41 +1,46 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useToast from "../../hooks/useToast";
+import { register } from "../../api/userApi";
+
 const SignUp = () => {
-  
+  const toast = useToast();
+
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>("");
+  const [disabled, setDisabled] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
-  const handleChange = (e: { target: { id: any; value: any; }; }) => {
+  const handleChange = (e: { target: { id: any; value: any } }) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setDisabled(true);
     try {
-      const res = await fetch('http://localhost:6300/api/v1/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      const data = await register(formData);
       console.log(data);
       if (data.success === false) {
         setError(data.message);
+        setDisabled(false);
         return;
       }
       setError(null);
-      navigate('/signin');
+
+      toast.success("Account created successfully");
+
+      setTimeout(() => {
+        navigate("/signin");
+      }, 5000);
     } catch (error) {
-    
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError('An unexpected error occurred');
+        setError("An unexpected error occurred");
       }
     }
   };
@@ -57,11 +62,12 @@ const SignUp = () => {
           id="password"
           onChange={handleChange}
         />
-         <button
+        <button
+          disabled={!formData.email || !formData.password || disabled}
           type="submit"
           className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          Sign In
+          Sign up
         </button>
       </form>
       <div className="flex gap-2 mt-5">
