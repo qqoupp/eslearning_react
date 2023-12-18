@@ -22,16 +22,18 @@ const SignIn = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-     
       const data = await login(formData);
-      
-      setError(null);
-
-      toast.success("Logged in successfully");
-
-      setTimeout(() => {
-        navigate("/");
-      }, 5000);
+       if (!data.success){
+         setError(data.message);
+         toast.error("Invalid credentials");
+       }
+       else {
+         setError(null);
+         toast.success("Logged in successfully");
+         setTimeout(() => {
+           navigate("/");
+         }, 1000);
+       }
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
