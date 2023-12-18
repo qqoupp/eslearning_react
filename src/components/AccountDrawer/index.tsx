@@ -2,6 +2,7 @@ import React from 'react';
 import { Drawer, List, ListItem, Paper } from "@mui/material";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../providers/userProvider";
 
 type NavigationDrawerProps = {
   open: boolean;
@@ -10,6 +11,8 @@ type NavigationDrawerProps = {
 
 const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
   const navigate = useNavigate();
+
+  const { user ,isLoggedIn, logout } = React.useContext(UserContext);
 
   const handleNavigate = (path: string) => {
     setOpen(false);
@@ -38,9 +41,18 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                   <span className="font-bold text-xl text-white">
                     Information
                   </span>
+                    {isLoggedIn && (
+                      <span>
+                        test
+                        {user?.email}
+                      </span>
+                    
+                    )}
                 </div>
                 <div className="flex flex-col align-items-centre">
                   <List>
+                    {!isLoggedIn && (
+                      <div>
                     <ListItem
                       button
                       className="text-xl gap-y-5"
@@ -55,6 +67,13 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                     >
                       Sign Up
                     </ListItem>
+                      </div>
+                      )}
+                    {isLoggedIn && (
+                      <ListItem button className="text-xl gap-y-5" onClick={logout}>
+                        Sign Out
+                      </ListItem>
+                    )}
                     <ListItem button className="text-xl gap-y-5">
                       About
                     </ListItem>

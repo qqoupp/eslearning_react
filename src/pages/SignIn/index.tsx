@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
 import { login } from "../../api/userApi";
 
+
 const SignIn = () => {
   const toast = useToast();
+
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>("");
@@ -22,7 +24,7 @@ const SignIn = () => {
     try {
      
       const data = await login(formData);
-
+      
       setError(null);
 
       toast.success("Logged in successfully");

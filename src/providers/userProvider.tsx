@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,13 +8,22 @@ type User = {
   password: string;
 };
 
-const UserContext = React.createContext<{
+type UserContextType = {
   user: User | null;
   isLoggedIn: boolean;
-}>({
+  loginUser: (user: User) => void;
+  logout: () => void;
+};
+
+/* eslint-disable @typescript-eslint/no-empty-function */
+export const UserContext = createContext<UserContextType>({
   user: null,
   isLoggedIn: false,
+  loginUser: () => {},
+  logout: () => {},
 });
+/* eslint-enable @typescript-eslint/no-empty-function */
+
 
 const UserProvider = ({ children }: any) => {
  
@@ -36,19 +45,28 @@ const UserProvider = ({ children }: any) => {
       setIsLoggedIn(true);
     }
   }, [ navigate, decodedTokenValue]);
+  
+  useEffect(() => {
+    if (decodedTokenValue) {
+      setUser(decodedTokenValue);
+    }
+  }, [isLoggedIn]);
 
-  const login = (user: User) => {
+  const loginUser = (user: User) => {
     setUser(user);
   };
 
   const logout = () => {
+    localStorage.removeItem('LLMUNI_TOKEN');
     setUser(null);
+    setIsLoggedIn(false);
+    navigate('/');
   };
 
   const value = {
     user,
     isLoggedIn,
-    login,
+    loginUser,
     logout,
   };
 
