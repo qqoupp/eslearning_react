@@ -43,8 +43,7 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                   </span>
                     {isLoggedIn && (
                       <span>
-                        test
-                        {user?.email}
+                        {user?.username}
                       </span>
                     
                     )}
@@ -70,9 +69,14 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                       </div>
                       )}
                     {isLoggedIn && (
+                      <div>
+                      <ListItem button className="text-xl gap-y-5" onClick={() => handleNavigate("/profile")}>
+                        Profile
+                      </ListItem>
                       <ListItem button className="text-xl gap-y-5" onClick={logout}>
                         Sign Out
                       </ListItem>
+                      </div>
                     )}
                     <ListItem button className="text-xl gap-y-5">
                       About
