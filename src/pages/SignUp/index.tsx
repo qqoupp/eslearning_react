@@ -6,7 +6,7 @@ import { register } from "../../api/userApi";
 const SignUp = () => {
   const toast = useToast();
 
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({username:"", email: "", password: "" });
   const [error, setError] = useState<string | null>("");
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -48,6 +48,13 @@ const SignUp = () => {
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7 pr-12">Sign Up</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 pr-12">
+        <input
+          type="username"
+          placeholder="username"
+          className="border p-3 rounded-lg"
+          id="username"
+          onChange={handleChange}
+          />
         <input
           type="email"
           placeholder="email"
