@@ -1,6 +1,9 @@
 import React, { createContext } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {accessTokenVerification, refreshToken} from "../api/tokenApi";
+import useToast from "../hooks/useToast";
+import { toast } from "react-toastify";
 
 type User = {
   id: number;
@@ -38,15 +41,33 @@ const UserProvider = ({ children }: any) => {
 
   const decodedTokenValue = decodedToken(token);
 
-
   useEffect(() => {
     if (!decodedTokenValue || decodedTokenValue?.exp * 1000 < Date.now()) {
-      localStorage.removeItem("LLMUNI_TOKEN");
-      setIsLoggedIn(false);
+      refreshToken({ email: user?.email }).then((response) => {
+        if (response.success) {
+          localStorage.setItem("LLMUNI_TOKEN", response.accessToken);
+          setIsLoggedIn(true);
+          console.log("Token refreshed");
+        } else {
+          localStorage.removeItem("LLMUNI_TOKEN");
+          setIsLoggedIn(false);
+          if(isLoggedIn){
+            toast.error("Session expired, please sign in again");
+            navigate('/signin');
+          }
+          console.log("Token not refreshed");
+        }
+      }).catch((error) => {
+        console.error("Error refreshing token:", error);
+        localStorage.removeItem("LLMUNI_TOKEN");
+        setIsLoggedIn(false);
+        navigate('/signin');
+      });
     } else {
       setIsLoggedIn(true);
     }
-  }, [ navigate, decodedTokenValue]);
+  }, [navigate, decodedTokenValue, user]);
+  
   
   useEffect(() => {
     if (decodedTokenValue) {
