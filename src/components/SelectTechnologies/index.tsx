@@ -2,35 +2,42 @@ import React from "react";
 import { TextField, Autocomplete } from "@mui/material";
 import { TechnologiesProps } from "../../pages/GuideGenerator";
 
-const MultiSelect: React.FC<{ technologies: TechnologiesProps[] }> = ({ technologies }) =>{
+interface MultiSelectProps {
+  technologies: TechnologiesProps[];
+  onSelectionChange: (selectedTechs: TechnologiesProps[]) => void; // Add this line
+}
+
+const MultiSelect: React.FC<MultiSelectProps> = ({ technologies, onSelectionChange }) => {
   return (
     <Autocomplete
-    sx={{
-      m: 1, 
-      width: 500, 
-      "& .MuiOutlinedInput-root": {
-        color: "white", // Text color
-        "& fieldset": {
-          borderColor: "rgba(255, 255, 255, 0.23)", // Adjust border color for visibility
+      sx={{
+        m: 1, 
+        width: 500, 
+        "& .MuiOutlinedInput-root": {
+          color: "white",
+          "& fieldset": {
+            borderColor: "rgba(255, 255, 255, 0.23)",
+          },
+          "&:hover fieldset": {
+            borderColor: "white",
+          },
         },
-        "&:hover fieldset": {
-          borderColor: "white", // Border color on hover
+        "& .MuiAutocomplete-paper": {
+          bgcolor: "#424242",
+          color: "white",
         },
-      },
-      "& .MuiAutocomplete-paper": {
-        bgcolor: "#424242", // Dropdown background color
-        color: "white", // Dropdown text color
-      },
-      "& .MuiChip-root": {
-        bgcolor: "#616161", // Chip background color
-        color: "white", // Chip text color
-      }
-    }}
-
+        "& .MuiChip-root": {
+          bgcolor: "#616161",
+          color: "white",
+        }
+      }}
       multiple
       options={technologies}
-      getOptionLabel={(option) => option.name} 
+      getOptionLabel={(option) => option.name}
       disableCloseOnSelect
+      onChange={(event, newValue) => {
+        onSelectionChange(newValue);
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -40,5 +47,6 @@ const MultiSelect: React.FC<{ technologies: TechnologiesProps[] }> = ({ technolo
       )}
     />
   );
-}
-  export default MultiSelect;
+};
+
+export default MultiSelect;
