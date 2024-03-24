@@ -4,6 +4,8 @@ import MultiSelect from "../../components/SelectTechnologies";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Padding } from "@mui/icons-material";
 import { fetchStream } from "../../api/openAI";
+import { UserContext } from "../../providers/userProvider";
+import {saveUserRequest} from "../../api/userRequest";
 
 export type TechnologiesProps = {
   name: string;
@@ -16,22 +18,55 @@ const GuideGenerator = () => {
   const [technologies, setTechnologies] = React.useState<TechnologiesProps[]>(
     []
   );
+  const { user } = React.useContext(UserContext);
 
   const [selectedTechnologies, setSelectedTechnologies] = React.useState<
     TechnologiesProps[]
   >([]);
   const [description, setDescription] = React.useState<string>("");
   const [messages, setMessages] = React.useState<string[]>([]);
+  const [userInput, setUserInput] = React.useState<string>("");
 
   const handleTechnologySelection = (newSelection: TechnologiesProps[]) => {
     setSelectedTechnologies(newSelection);
   };
+
+  const handleSave = async () => {
+    console.log({
+      userId: user?.id, 
+      input: userInput, 
+      output: messages.join("\n")
+    });
+    
+    // Only proceed if all values are defined
+    if (user?.id && userInput && messages.length > 0) {
+      try {
+        const response = await saveUserRequest({
+          userId: user.id,
+          input: userInput,
+          output: messages.join("\n")
+        });
+        console.log('Save response:', response);
+      } catch (error) {
+        console.error('Error saving:', error);
+      }
+    } else {
+      console.error('Required data is not set');
+    }
+  };
+  
 
   const handleSubmit = async () => {
     const selectedTechNames = selectedTechnologies
       .map((tech) => tech.name)
       .join(", ");
     const prompt = `I want a guide for building a program using: ${selectedTechNames} this is what i want it to do: ${description}`;
+    setUserInput(
+      "chosen technologies: " +
+        selectedTechNames +
+        " description: " +
+        description
+    );
     if (!description.trim()) return;
 
     setMessages([]); // Clear previous messages if any
@@ -82,7 +117,7 @@ const GuideGenerator = () => {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3} className="pt-32">
+      <Grid container spacing={3} className="pt-25">
         <Grid item xs={12} md={12} lg={6}>
           <div
             style={{
@@ -95,6 +130,13 @@ const GuideGenerator = () => {
               height: "100%",
             }}
           >
+            <Typography
+              variant="h3"
+              component="div"
+              className="text-4xl md:text-5xl"
+            >
+              The Ideea
+            </Typography>
             <Paper
               style={{
                 height: "70vh",
@@ -110,7 +152,7 @@ const GuideGenerator = () => {
                 <Typography
                   variant="h4"
                   component="div"
-                  className="pl-12 text-4xl md:text-5xl"
+                  className="pl-12 text-4xl md:text-5xl pt-5"
                 >
                   Select technologies
                 </Typography>
@@ -139,10 +181,10 @@ const GuideGenerator = () => {
                     "& .MuiOutlinedInput-root": {
                       color: "white", // Text color
                       "& fieldset": {
-                        borderColor: "rgba(255, 255, 255, 0.23)", // Adjust border color for visibility
+                        borderColor: "white", // Adjust border color for visibility
                       },
                       "&:hover fieldset": {
-                        borderColor: "white", // Border color on hover
+                        borderColor: "rgba(255, 255, 255, 0.23)", // Border color on hover
                       },
                       "&.Mui-focused fieldset": {
                         borderColor: "white", // Border color when focused
@@ -158,18 +200,26 @@ const GuideGenerator = () => {
                     },
                   }}
                 />
-                <Button
-                  onClick={handleSubmit}
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
+                <div className="flex justify-center pt-5">
+                  <button
+                    onClick={handleSubmit}
+                    className="w-40 h-10 bg-slate-100 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded-full"
+                  >
+                    Generate
+                  </button>
+                </div>
               </div>
             </Paper>
           </div>
         </Grid>
         <Grid item xs={12} md={12} lg={6}>
+          <Typography
+            variant="h3"
+            component="div"
+            className="text-4xl md:text-5xl pl-40"
+          >
+            The Guide
+          </Typography>
           <Paper
             style={{
               height: "70vh",
@@ -187,7 +237,7 @@ const GuideGenerator = () => {
             <div style={{ width: "100%" }}>
               {messages.map((msg, index) => (
                 <Typography
-                  variant="body1"
+                  variant="inherit"
                   key={index}
                   style={{
                     marginBottom: "0.5rem",
@@ -198,6 +248,14 @@ const GuideGenerator = () => {
                   {msg}
                 </Typography>
               ))}
+              {messages.length === 0 ? null : (
+                <button
+                  onClick={handleSave}
+                  className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Save
+                </button>
+              )}
             </div>
           </Paper>
         </Grid>

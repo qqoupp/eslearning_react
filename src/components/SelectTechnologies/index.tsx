@@ -16,10 +16,10 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ technologies, onSelectionChan
         "& .MuiOutlinedInput-root": {
           color: "white",
           "& fieldset": {
-            borderColor: "rgba(255, 255, 255, 0.23)",
+            borderColor: "white",
           },
           "&:hover fieldset": {
-            borderColor: "white",
+            borderColor: "rgba(255, 255, 255, 0.23)",
           },
         },
         "& .MuiAutocomplete-paper": {
@@ -27,8 +27,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ technologies, onSelectionChan
           color: "white",
         },
         "& .MuiChip-root": {
-          bgcolor: "#616161",
-          color: "white",
+          bgcolor: "white",
+          color: "black",
         }
       }}
       multiple
