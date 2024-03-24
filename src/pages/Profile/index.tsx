@@ -6,13 +6,15 @@ import { List, ListItem, Paper, Typography } from "@material-ui/core";
 
 
 const Profile = () => {
-  const { user ,isLoggedIn, logout } = React.useContext(UserContext);
+  const { user} = React.useContext(UserContext);
   const [userRequests, setUserRequests] = useState<UserRequest[]>([]);
 
   interface UserRequest {
     id: number;
+    technology: string;
     input: string;
     output: string;
+    createdAt: string;
   }
 
   useEffect(() => {
@@ -38,6 +40,10 @@ const Profile = () => {
           {userRequests.map((request) => (
             <ListItem key={request.id}>
               <Paper elevation={3} style={{ padding: '20px', margin: '20px' , backgroundColor:"#001524", color:"white" }}>
+              <Typography component="span" variant="body1">{request.createdAt.slice(0,10) +" "+ request.createdAt.slice(11,16)}</Typography>
+              <br/>
+              <Typography component="span" variant="body1">{request.technology}</Typography>
+              <br/>
               <Typography component="span" variant="body1">{request.input}</Typography>
               <br/>
               <Typography component="span" variant="body2">{request.output}</Typography>

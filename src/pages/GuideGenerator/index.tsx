@@ -5,7 +5,7 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Padding } from "@mui/icons-material";
 import { fetchStream } from "../../api/openAI";
 import { UserContext } from "../../providers/userProvider";
-import {saveUserRequest} from "../../api/userRequest";
+import { saveUserRequest } from "../../api/userRequest";
 
 export type TechnologiesProps = {
   name: string;
@@ -26,6 +26,7 @@ const GuideGenerator = () => {
   const [description, setDescription] = React.useState<string>("");
   const [messages, setMessages] = React.useState<string[]>([]);
   const [userInput, setUserInput] = React.useState<string>("");
+  const [technology, setTechnology] = React.useState<string>("");
 
   const handleTechnologySelection = (newSelection: TechnologiesProps[]) => {
     setSelectedTechnologies(newSelection);
@@ -33,40 +34,37 @@ const GuideGenerator = () => {
 
   const handleSave = async () => {
     console.log({
-      userId: user?.id, 
-      input: userInput, 
-      output: messages.join("\n")
+      userId: user?.id,
+      technology: technology,
+      input: userInput,
+      output: messages.join("\n"),
     });
-    
+
     // Only proceed if all values are defined
     if (user?.id && userInput && messages.length > 0) {
       try {
         const response = await saveUserRequest({
           userId: user.id,
+          technology: technology,
           input: userInput,
-          output: messages.join("\n")
+          output: messages.join("\n"),
         });
-        console.log('Save response:', response);
+        console.log("Save response:", response);
       } catch (error) {
-        console.error('Error saving:', error);
+        console.error("Error saving:", error);
       }
     } else {
-      console.error('Required data is not set');
+      console.error("Required data is not set");
     }
   };
-  
 
   const handleSubmit = async () => {
     const selectedTechNames = selectedTechnologies
       .map((tech) => tech.name)
       .join(", ");
     const prompt = `I want a guide for building a program using: ${selectedTechNames} this is what i want it to do: ${description}`;
-    setUserInput(
-      "chosen technologies: " +
-        selectedTechNames +
-        " description: " +
-        description
-    );
+    setUserInput(description);
+    setTechnology(selectedTechNames);
     if (!description.trim()) return;
 
     setMessages([]); // Clear previous messages if any
