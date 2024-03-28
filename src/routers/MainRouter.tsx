@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "../components/Header";
+import ProjectGenerator from "../pages/ProjectGenerator";
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Profile = React.lazy(() => import("../pages/Profile"));
 const SignUp = React.lazy(() => import("../pages/SignUp"));
@@ -54,6 +55,14 @@ const MainRouter = () => {
                 <GuideGenerator/>
               </>
             }
+          />
+          <Route
+          path="/project"
+          element={
+            <>
+              <ProjectGenerator/>
+            </>
+          }
           />
 
         </Routes>

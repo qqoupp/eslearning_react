@@ -15,4 +15,11 @@ const getUserRequests = async (userId: number) => {
         });
 }
 
-export { saveUserRequest, getUserRequests};
+const deleteUserRequest = async (id: number) => {
+    return await baseQuery({
+        endpoint: `userRequests/${id}`,
+        options: { method: "DELETE" },
+    });
+}
+
+export { saveUserRequest, getUserRequests, deleteUserRequest};

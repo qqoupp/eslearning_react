@@ -22,7 +22,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
 
-    const fetchData = async () => {
+    const fetchData = async () => {``
       const response = await fetch("http://localhost:6300/api/v1/technologies");
       const data = await response.json();
       setCardData(data);

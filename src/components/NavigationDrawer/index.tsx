@@ -54,7 +54,10 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                       >
                         Project Guide
                       </ListItem>
-                      <ListItem button className="text-xl gap-y-5">
+                      <ListItem button className="text-xl gap-y-5"
+                      onClick={() => handleNavigate("/project")}
+                      >
+                      
                         Project Ideea
                       </ListItem>
                     </div>

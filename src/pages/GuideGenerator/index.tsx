@@ -6,6 +6,7 @@ import { Padding } from "@mui/icons-material";
 import { fetchStream } from "../../api/openAI";
 import { UserContext } from "../../providers/userProvider";
 import { saveUserRequest } from "../../api/userRequest";
+import Image5 from "../../components/Images/index5";
 
 export type TechnologiesProps = {
   name: string;
@@ -117,6 +118,9 @@ const GuideGenerator = () => {
     <React.Fragment>
       <Grid container spacing={3} className="pt-25">
         <Grid item xs={12} md={12} lg={6}>
+          <Image5 />
+        </Grid>
+        <Grid item xs={12} md={12} lg={6}>
           <div
             style={{
               display: "flex",
@@ -209,8 +213,9 @@ const GuideGenerator = () => {
               </div>
             </Paper>
           </div>
+        
         </Grid>
-        <Grid item xs={12} md={12} lg={6}>
+      </Grid>
           <Typography
             variant="h3"
             component="div"
@@ -218,20 +223,6 @@ const GuideGenerator = () => {
           >
             The Guide
           </Typography>
-          <Paper
-            style={{
-              height: "70vh",
-              borderRadius: "8px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-              padding: "20px",
-              display: "flex",
-              flexDirection: "column",
-              overflowY: "auto",
-              overflowX: "auto",
-              boxSizing: "border-box",
-            }}
-            elevation={3}
-          >
             <div style={{ width: "100%" }}>
               {messages.map((msg, index) => (
                 <Typography
@@ -255,9 +246,6 @@ const GuideGenerator = () => {
                 </button>
               )}
             </div>
-          </Paper>
-        </Grid>
-      </Grid>
     </React.Fragment>
   );
 };
