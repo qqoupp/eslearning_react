@@ -22,7 +22,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
 
-    const fetchData = async () => {``
+    const fetchData = async () => {
       const response = await fetch("http://localhost:6300/api/v1/technologies");
       const data = await response.json();
       setCardData(data);
@@ -53,16 +53,10 @@ const LandingPage: React.FC = () => {
   );
 
   return (
-    <div className="p-20">
-      <Grid container spacing={2} paddingTop={10}>
-        <Grid item xs={12} md={8}>
-          <Typography
-            variant="h2"
-            sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" } }}
-          >
-            Elevate Stack Learning
-          </Typography>
-          <Typography variant="h4" className="pt-9 text-justify">
+    <div>
+      <Grid container spacing={4} paddingTop={10}>
+        <Grid item xs={7}>
+          <Typography variant="h5" className="pt-12 text-justify">
             Welcome to E.S.L., your hub for navigating the modern landscape of
             web development technologies. Our mission is to empower developers
             with comprehensive guides, in-depth tutorials, and the latest
@@ -70,9 +64,6 @@ const LandingPage: React.FC = () => {
             starting out, our resources are tailored to accelerate your learning
             and enhance your projects.
           </Typography>
-        </Grid>
-        <Grid item xs={12} md={4} paddingBottom={20}>
-          <Image />
           <div className="pt-16 pb-16 pl-2">
             <Link to={"/signin"}>
               <button
@@ -83,6 +74,10 @@ const LandingPage: React.FC = () => {
               </button>
             </Link>
           </div>
+        </Grid>
+        <Grid item xs={5}>
+          <Image />
+          
         </Grid>
       </Grid>
       <Grid container spacing={2}>

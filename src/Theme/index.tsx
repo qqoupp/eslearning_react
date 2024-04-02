@@ -6,13 +6,6 @@ const theme = createTheme({
     fontSize: 12,
     htmlFontSize: 15,
   },
-  palette: {
-    background: {
-        default: '#F5F5F5',
-        
-    },
-
-},
 });
 
 export default theme;

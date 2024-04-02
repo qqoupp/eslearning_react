@@ -6,8 +6,8 @@ const Image = () => {
 
     return (
         <div className="flex justify-center">
-            <img src={ImageSvg} alt="Logo" className="object-cover" />
-        </div>
+        <img src={ImageSvg} alt="Image2" className="w-screen object-cover" />
+    </div>
     );
 
 };

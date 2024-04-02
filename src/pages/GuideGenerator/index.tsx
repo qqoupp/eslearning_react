@@ -29,6 +29,8 @@ const GuideGenerator = () => {
   const [userInput, setUserInput] = React.useState<string>("");
   const [technology, setTechnology] = React.useState<string>("");
 
+  const myRef = React.useRef<HTMLDivElement>(null);
+
   const handleTechnologySelection = (newSelection: TechnologiesProps[]) => {
     setSelectedTechnologies(newSelection);
   };
@@ -70,7 +72,7 @@ const GuideGenerator = () => {
 
     setMessages([]); // Clear previous messages if any
     let paragraph = ""; // Holds ongoing text
-
+    
     try {
       const reader = await fetchStream(prompt);
       const decoder = new TextDecoder();
@@ -84,6 +86,7 @@ const GuideGenerator = () => {
         }
         const text = decoder.decode(value);
         const lines = text.split("\n"); // Split text into lines
+
         for (const line of lines) {
           if (line === "") {
             // Empty line signifies a paragraph break
@@ -97,6 +100,9 @@ const GuideGenerator = () => {
           }
         }
         await processChunk();
+        if (myRef.current) {
+          myRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
       };
 
       await processChunk();
@@ -116,45 +122,28 @@ const GuideGenerator = () => {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3} className="pt-25">
-        <Grid item xs={12} md={12} lg={6}>
-          <Image5 />
-        </Grid>
-        <Grid item xs={12} md={12} lg={6}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              // Change the size to fit the parent element of this div
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Typography
-              variant="h3"
-              component="div"
-              className="text-4xl md:text-5xl"
-            >
-              The Ideea
-            </Typography>
-            <Paper
+      <div className="p-12">
+        <Grid container spacing={3}>
+          <Grid item xs={5}>
+            <Image5 />
+          </Grid>
+          <Grid item xs={7}>
+            <div
               style={{
-                height: "70vh",
-                backgroundColor: "#001524",
-                color: "white",
-                borderRadius: "8px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
                 display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                // Change the size to fit the parent element of this div
+                width: "100%",
+                height: "100%",
               }}
-              elevation={3}
             >
-              <div className="flex flex-col text-white p-10">
+              <div className="flex flex-col p-10">
                 <Typography
                   variant="h4"
                   component="div"
-                  className="pl-12 text-4xl md:text-5xl pt-5"
+                  className="text-4xl md:text-5xl pt-5"
                 >
                   Select technologies
                 </Typography>
@@ -165,7 +154,7 @@ const GuideGenerator = () => {
                 <Typography
                   variant="h4"
                   component="div"
-                  className="pl-12 text-4xl md:text-5xl"
+                  className="text-4xl md:text-5xl"
                 >
                   Describe what you want to build
                 </Typography>
@@ -174,22 +163,21 @@ const GuideGenerator = () => {
                   id="outlined-multiline-static"
                   multiline
                   rows={7}
-                  placeholder="Default Value"
                   variant="outlined"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   sx={{
                     padding: "10px",
                     "& .MuiOutlinedInput-root": {
-                      color: "white", // Text color
+                      color: "black", // Text color
                       "& fieldset": {
-                        borderColor: "white", // Adjust border color for visibility
+                        borderColor: "black", // Adjust border color for visibility
                       },
                       "&:hover fieldset": {
-                        borderColor: "rgba(255, 255, 255, 0.23)", // Border color on hover
+                        borderColor: "gray", // Border color on hover
                       },
                       "&.Mui-focused fieldset": {
-                        borderColor: "white", // Border color when focused
+                        borderColor: "black", // Border color when focused
                       },
                     },
                     // Optional: If you also want to style the label like in the MultiSelect
@@ -204,48 +192,53 @@ const GuideGenerator = () => {
                 />
                 <div className="flex justify-center pt-5">
                   <button
+                    type="button"
                     onClick={handleSubmit}
-                    className="w-40 h-10 bg-slate-100 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded-full"
+                    className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
                     Generate
                   </button>
                 </div>
               </div>
-            </Paper>
-          </div>
-        
-        </Grid>
-      </Grid>
-          <Typography
-            variant="h3"
-            component="div"
-            className="text-4xl md:text-5xl pl-40"
-          >
-            The Guide
-          </Typography>
-            <div style={{ width: "100%" }}>
-              {messages.map((msg, index) => (
-                <Typography
-                  variant="inherit"
-                  key={index}
-                  style={{
-                    marginBottom: "0.5rem",
-                    lineHeight: "1.6",
-                    whiteSpace: "pre-wrap", // Allows natural breaks and white space
-                  }}
-                >
-                  {msg}
-                </Typography>
-              ))}
-              {messages.length === 0 ? null : (
-                <button
-                  onClick={handleSave}
-                  className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
-                >
-                  Save
-                </button>
-              )}
             </div>
+          </Grid>
+        </Grid>
+        <div ref={myRef} style={{ width: "100%" }} className="pt-40">
+          <Paper
+            elevation={5}
+            
+            style={{
+              width: "100%",
+              padding: "20px",
+              margin: "20px",
+              backgroundColor: "inherit",
+              overflow: "auto",
+            }}
+          >
+          {messages.map((msg, index) => (
+            <Typography
+              variant="inherit"
+              key={index}
+              style={{
+                marginBottom: "0.5rem",
+                lineHeight: "1.6",
+                whiteSpace: "pre-wrap", // Allows natural breaks and white space
+              }}
+            >
+              {msg}
+            </Typography>
+          ))}
+          {messages.length === 0 ? null : (
+            <button
+              onClick={handleSave}
+              className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Save
+            </button>
+          )}
+          </Paper>
+        </div>
+      </div>
     </React.Fragment>
   );
 };

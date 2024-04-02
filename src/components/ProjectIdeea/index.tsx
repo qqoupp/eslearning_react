@@ -16,7 +16,6 @@ interface ProjectIdeea {
 export default function ResponsiveStack() {
   const [projects, setProjects] = React.useState<ProjectIdeea[]>([]);
 
-
   useEffect(() => {
     getProjectIdeea()
       .then((data: ProjectIdeea[]) => {
@@ -29,49 +28,89 @@ export default function ResponsiveStack() {
   }, []);
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     padding: theme.spacing(1),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
   }));
 
   return (
-    <Box className="container mx-auto p-4">
+    <Box className="container mx-auto p-4 pt-16">
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Image4/>
+        <Grid item xs={4}>
+          <div className="pt-12">
+            <Image4 />
+          </div>
         </Grid>
-        <Grid  item xs={12} md={6}>
-          {projects.map((project) => (
+        <Grid item xs={8}>
             <Stack
-              key={project.id}
-              direction={{ xs: "column", sm: "row", md: "row", lg: "row" }}
-              spacing={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-              borderBottom={1}
-              borderTop={1}
-              padding={2}
+            direction={{ xs: "column", sm: "row", md: "row", lg: "row" }}
+            spacing={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+            borderBottom={1}
             >
-              <Typography
-                variant="body1"
-                gutterBottom
-                style={{ color: "#001524" }}
-                paddingRight={2}
-                borderRight={1}
-              >{project.type}</Typography>
-              <Typography
-               variant="body1"
-               gutterBottom
-               style={{ color: "#001524" }}
-               paddingRight={2}
-               borderRight={1}
-              >{project.name}</Typography>
-              <Typography
-               variant="body1"
-               gutterBottom
-               style={{ color: "#001524" }}
-              >{project.description}</Typography>
+            <Typography
+              variant="h4"
+              component="div"
+              className="text-4xl md:text-5xl pt-5"
+                paddingRight={4}
+            >
+                Category
+            </Typography>
+            <Typography
+              variant="h4"
+              component="div"
+              className="text-4xl md:text-5xl pt-5"
+              paddingRight={10}
+
+            >
+                Name
+            </Typography>
+            <Typography
+              variant="h4"
+              component="div"
+              className="text-4xl md:text-5xl pt-5"
+            >
+                Description
+            </Typography>
             </Stack>
-          ))}
+          <div className="overflow-auto" style={{height:"600px"}}>
+            {projects.map((project) => (
+              <Stack
+                key={project.id}
+                direction={{ xs: "column", sm: "row", md: "row", lg: "row" }}
+                spacing={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+                borderBottom={1}
+                borderTop={1}
+                padding={2}
+              >
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  style={{ color: "#001524" }}
+                  paddingRight={2}
+                  borderRight={1}
+                >
+                  {project.type}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  style={{ color: "#001524" }}
+                  paddingRight={2}
+                  borderRight={1}
+                >
+                  {project.name}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  style={{ color: "#001524" }}
+                >
+                  {project.description}
+                </Typography>
+              </Stack>
+            ))}
+          </div>
         </Grid>
       </Grid>
     </Box>
