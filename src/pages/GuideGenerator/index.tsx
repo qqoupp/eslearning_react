@@ -4,6 +4,9 @@ import MultiSelect from "../../components/SelectTechnologies";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Padding } from "@mui/icons-material";
 import { fetchStream } from "../../api/openAI";
+import { UserContext } from "../../providers/userProvider";
+import { saveUserRequest } from "../../api/userRequest";
+import Image5 from "../../components/Images/index5";
 
 export type TechnologiesProps = {
   name: string;
@@ -16,30 +19,83 @@ const GuideGenerator = () => {
   const [technologies, setTechnologies] = React.useState<TechnologiesProps[]>(
     []
   );
+  const { user } = React.useContext(UserContext);
 
   const [selectedTechnologies, setSelectedTechnologies] = React.useState<
     TechnologiesProps[]
   >([]);
   const [description, setDescription] = React.useState<string>("");
   const [messages, setMessages] = React.useState<string[]>([]);
+  const [userInput, setUserInput] = React.useState<string>("");
+  const [technology, setTechnology] = React.useState<string>("");
+  const [showPaper, setShowPaper] = React.useState(false);
+
+
+  const myRef = React.useRef<HTMLDivElement>(null);
 
   const handleTechnologySelection = (newSelection: TechnologiesProps[]) => {
     setSelectedTechnologies(newSelection);
   };
 
+  const handleSave = async () => {
+    console.log({
+      userId: user?.id,
+      technology: technology,
+      input: userInput,
+      output: messages.join("\n"),
+    });
+
+    // Only proceed if all values are defined
+    if (user?.id && userInput && messages.length > 0) {
+      try {
+        const response = await saveUserRequest({
+          userId: user.id,
+          technology: technology,
+          input: userInput,
+          output: messages.join("\n"),
+        });
+        console.log("Save response:", response);
+      } catch (error) {
+        console.error("Error saving:", error);
+      }
+    } else {
+      console.error("Required data is not set");
+    }
+  };
+
   const handleSubmit = async () => {
+    setShowPaper(true)
     const selectedTechNames = selectedTechnologies
       .map((tech) => tech.name)
       .join(", ");
-    const prompt = `I want a guide for building a program using: ${selectedTechNames} this is what i want it to do: ${description}`;
+      const prompt = `
+      Create a comprehensive guide outlining the learning path and development steps necessary for a project based on the following technologies and description. Focus on sequentially ordered learning topics and practical project development stages.
+
+      Technologies: ${selectedTechNames}
+      Project Description: ${description}
+
+      The guide should include:
+      1. A step-by-step learning path detailing the key concepts and skills to be acquired for using each technology effectively.
+      2. Specific resources (e.g., online courses, tutorials, documentation) where these concepts can be learned.
+      3. A breakdown of the project development process into manageable steps, indicating what to learn or apply at each stage.
+      4. Practical tips for applying the learned technologies in the context of the described project.
+      5. Any additional advice on troubleshooting common issues and leveraging community resources for help.
+
+      Aim to provide a clear and actionable guide that will enable someone with basic programming knowledge to start the project, learn the necessary technologies, and successfully build the project as described.
+    `;
+    setUserInput(description);
+    setTechnology(selectedTechNames);
     if (!description.trim()) return;
 
     setMessages([]); // Clear previous messages if any
     let paragraph = ""; // Holds ongoing text
-
+    
     try {
       const reader = await fetchStream(prompt);
       const decoder = new TextDecoder();
+      if (myRef.current) {
+        myRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
 
       const processChunk = async () => {
         const { done, value } = await reader.read();
@@ -50,6 +106,7 @@ const GuideGenerator = () => {
         }
         const text = decoder.decode(value);
         const lines = text.split("\n"); // Split text into lines
+
         for (const line of lines) {
           if (line === "") {
             // Empty line signifies a paragraph break
@@ -82,35 +139,28 @@ const GuideGenerator = () => {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3} className="pt-32">
-        <Grid item xs={12} md={12} lg={6}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              // Change the size to fit the parent element of this div
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Paper
+      <div className="p-12">
+        <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={5} lg={4}>
+            <Image5 />
+          </Grid>
+          <Grid item xs={12} sm={6} md={7} lg={8}>
+            <div
               style={{
-                height: "70vh",
-                backgroundColor: "#001524",
-                color: "white",
-                borderRadius: "8px",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
                 display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                // Change the size to fit the parent element of this div
+                width: "100%",
+                height: "100%",
               }}
-              elevation={3}
             >
-              <div className="flex flex-col text-white p-10">
+              <div className="flex flex-col p-10">
                 <Typography
                   variant="h4"
                   component="div"
-                  className="pl-12 text-4xl md:text-5xl"
+                  className="text-4xl md:text-5xl pt-5"
                 >
                   Select technologies
                 </Typography>
@@ -121,7 +171,7 @@ const GuideGenerator = () => {
                 <Typography
                   variant="h4"
                   component="div"
-                  className="pl-12 text-4xl md:text-5xl"
+                  className="text-4xl md:text-5xl"
                 >
                   Describe what you want to build
                 </Typography>
@@ -130,22 +180,21 @@ const GuideGenerator = () => {
                   id="outlined-multiline-static"
                   multiline
                   rows={7}
-                  placeholder="Default Value"
                   variant="outlined"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   sx={{
                     padding: "10px",
                     "& .MuiOutlinedInput-root": {
-                      color: "white", // Text color
+                      color: "black", // Text color
                       "& fieldset": {
-                        borderColor: "rgba(255, 255, 255, 0.23)", // Adjust border color for visibility
+                        borderColor: "black", // Adjust border color for visibility
                       },
                       "&:hover fieldset": {
-                        borderColor: "white", // Border color on hover
+                        borderColor: "gray", // Border color on hover
                       },
                       "&.Mui-focused fieldset": {
-                        borderColor: "white", // Border color when focused
+                        borderColor: "black", // Border color when focused
                       },
                     },
                     // Optional: If you also want to style the label like in the MultiSelect
@@ -158,50 +207,59 @@ const GuideGenerator = () => {
                     },
                   }}
                 />
-                <Button
-                  onClick={handleSubmit}
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
+                <div className="flex justify-center pt-5">
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                  >
+                    Generate
+                  </button>
+                </div>
               </div>
-            </Paper>
-          </div>
-        </Grid>
-        <Grid item xs={12} md={12} lg={6}>
-          <Paper
-            style={{
-              height: "70vh",
-              borderRadius: "8px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-              padding: "20px",
-              display: "flex",
-              flexDirection: "column",
-              overflowY: "auto",
-              overflowX: "auto",
-              boxSizing: "border-box",
-            }}
-            elevation={3}
-          >
-            <div style={{ width: "100%" }}>
-              {messages.map((msg, index) => (
-                <Typography
-                  variant="body1"
-                  key={index}
-                  style={{
-                    marginBottom: "0.5rem",
-                    lineHeight: "1.6",
-                    whiteSpace: "pre-wrap", // Allows natural breaks and white space
-                  }}
-                >
-                  {msg}
-                </Typography>
-              ))}
             </div>
-          </Paper>
+          </Grid>
         </Grid>
-      </Grid>
+        {showPaper && (
+
+        <div style={{ width: "100%" }} className="pt-60">
+          <Paper
+            elevation={5}
+            ref={myRef} 
+            style={{
+              height: "850px",
+              width: "100%",
+              padding: "20px",
+              margin: "20px",
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
+              overflow: "auto",
+            }}
+          >
+          {messages.map((msg, index) => (
+            <Typography
+              variant="inherit"
+              key={index}
+              style={{
+                marginBottom: "0.5rem",
+                lineHeight: "1.6",
+                whiteSpace: "pre-wrap", // Allows natural breaks and white space
+              }}
+            >
+              {msg}
+            </Typography>
+          ))}
+          {messages.length === 0 ? null : (
+            <button
+              onClick={handleSave}
+              className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Save
+            </button>
+          )}
+          </Paper>
+        </div>
+        )}
+      </div>
     </React.Fragment>
   );
 };

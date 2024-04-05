@@ -78,7 +78,7 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                       </ListItem>
                       </div>
                     )}
-                    <ListItem button className="text-xl gap-y-5">
+                    <ListItem button className="text-xl gap-y-5" onClick={() => handleNavigate("/about")}>
                       About
                     </ListItem>
                     <ListItem button className="text-xl gap-y-5">

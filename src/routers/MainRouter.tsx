@@ -6,6 +6,8 @@ const Profile = React.lazy(() => import("../pages/Profile"));
 const SignUp = React.lazy(() => import("../pages/SignUp"));
 const SignIn = React.lazy(() => import("../pages/SignIn"));
 const GuideGenerator = React.lazy(() => import("../pages/GuideGenerator"));
+const About = React.lazy(() => import("../pages/About"));
+const ProjectGenerator = React.lazy(() => import("../pages/ProjectGenerator"));
 
 const Loading = () => <p>Loading ...</p>;
 
@@ -55,7 +57,22 @@ const MainRouter = () => {
               </>
             }
           />
-
+          <Route
+          path="/project"
+          element={
+            <>
+              <ProjectGenerator/>
+            </>
+          }
+          />
+          <Route
+          path="/about"
+          element={
+            <>
+              <About/>
+            </>
+          }
+          />
         </Routes>
       </React.Suspense>
     </>

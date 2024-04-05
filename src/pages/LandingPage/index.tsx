@@ -19,6 +19,8 @@ const LandingPage: React.FC = () => {
   const [showPaper, setShowPaper] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [cardData, setCardData] = useState<CardDataProps[] | undefined>();
+  const myRef = React.useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
 
@@ -29,6 +31,20 @@ const LandingPage: React.FC = () => {
     };
     fetchData();
 
+  }, []);
+
+  const [position, setPosition] = useState({ first: "0%", second: "0%", third: "0%" });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPosition((prevPosition) => ({
+        first: prevPosition.first === "0%" ? "100%" : "0%", // Toggle between 0% and 100%
+        second: prevPosition.second === "0%" ? "-100%" : "0%", // Inverse direction for the second
+        third: prevPosition.third === "0%" ? "100%" : "0%" // Toggle between 0% and 100%
+      }));
+    }, 4000); // Change position every 15 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 
 
@@ -52,68 +68,82 @@ const LandingPage: React.FC = () => {
       card.type === subheaders[activeTab]
   );
 
+  useEffect(() => {
+    if (showPaper && myRef.current) {
+      myRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [showPaper]);
+  const handleSubmit = () => {
+    setShowPaper(!showPaper)
+  }
+
   return (
-    <div className="p-20">
-      <Grid container spacing={2} paddingTop={10}>
-        <Grid item xs={12} md={8}>
-          <Typography
-            variant="h2"
-            sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" } }}
-          >
-            Elevate Stack Learning
-          </Typography>
-          <Typography variant="h4" className="pt-9 text-justify">
-            Welcome to E.S.L., your hub for navigating the modern landscape of
-            web development technologies. Our mission is to empower developers
-            with comprehensive guides, in-depth tutorials, and the latest
-            industry insights. Whether you&apos;re a seasoned coder or just
-            starting out, our resources are tailored to accelerate your learning
-            and enhance your projects.
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={4} paddingBottom={20}>
-          <Image />
-          <div className="pt-16 pb-16 pl-2">
+    <div>
+      <div className="p-16">
+      <div
+        className="flex justify-center text-justify"
+        style={{ transform: `translateX(${position.first})`, transition: "transform 1s ease-in-out" }}
+      >
+        <Typography variant="h1">
+          Start planning
+        </Typography>
+      </div>
+      <div
+        className="text-justify flex justify-center"
+        style={{ transform: `translateX(${position.second})`, transition: "transform 1s ease-in-out", transitionDelay: "1s" }}
+      >
+        <Typography variant="h1">
+          Start learning
+        </Typography>
+      </div>
+      <div
+        className="text-justify flex justify-center"
+        style={{ transform: `translateX(${position.third})`, transition: "transform 1s ease-in-out", transitionDelay: "2s" }}
+      >
+        <Typography variant="h1">
+          Start creating
+        </Typography>
+      </div>
+      <div
+        className="text-justify flex justify-center"
+        style={{ transform: `translateX(${position.second})`, transition: "transform 1s ease-in-out", transitionDelay: "3s" }}
+      >
+        <Typography variant="h1">
+          Start developing
+        </Typography>
+      </div>
+          <div className="flex justify-center p-10">
             <Link to={"/signin"}>
               <button
                 type="submit"
-                className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                className="bg-costum text-white p-3  uppercase hover:opacity-95 disabled:opacity-80"
               >
                 Try it out
               </button>
             </Link>
           </div>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
-          <Image2 />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <Typography variant="h4" className="pt-9 text-justify">
-            Deciding on the right technology can be tricky with so many options
-            out there. Our website is here to help. We showcase a selection of
-            popular technologies across different areas like frontend, backend,
-            and databases. It&apos;s a quick way to get familiar with
-            what&apos;s available and find what might work best for your
-            projects
+      </div>
+      <div>
+        <div className="flex justify-center">
+          <Typography variant="body2" className="pt-9 text-justify">
+           Learn more about technologies and tools that can help you bring your project to life.
           </Typography>
-
-          <div className="pt-16 pb-16">
+        </div>
+          <div className=" flex justify-center">
             <button
               type="button"
               className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95"
-              onClick={() => setShowPaper(!showPaper)} // Toggle visibility
+              onClick={handleSubmit}
+               // Toggle visibility
             >
               {showPaper ? "Hide Technologies" : "Show Technologies"}
             </button>
           </div>
-        </Grid>
-      </Grid>
+      </div>
 
       {showPaper && (
-        <div>
-          <Tabs value={activeTab} onChange={handleTabChange} centered>
+        <div className="overflow-auto" ref = {myRef}>
+          <Tabs value={activeTab}  onChange={handleTabChange} centered>
             {subheaders.map((subheader, index) => (
               <Tab label={subheader} key={index} />
             ))}
@@ -128,6 +158,8 @@ const LandingPage: React.FC = () => {
               padding: { xs: "20px", sm: "30px", md: "50px" },
               background: "#DCDCDC",
               borderRadius: "15px",
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
+
             }}
           >
             <div className="">
@@ -143,7 +175,7 @@ const LandingPage: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               <Typography
-                variant="h4"
+                variant="h5"
                 sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" } }}
                 className="pt-9"
                 paddingTop={15}

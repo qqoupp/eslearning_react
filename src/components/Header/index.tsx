@@ -12,7 +12,7 @@ const Header: React.FC = () => {
     <>
       <NavigationDrawer open={open} setOpen={setOpen} />
       <AccountDrawer open={accountOpen} setOpen={setAccountOpen} />
-      <div className="py-6 border-b flex flex-row justify-between">
+      <div className="pb-2 border-b flex flex-row justify-between">
         <HeaderMenu
           onClick={() => setOpen(!open)}
           open={open}

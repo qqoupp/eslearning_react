@@ -12,7 +12,7 @@ const AccountMenu = (props:AccountMenuProps) => {
     const { onClick, open } = props;
 
     return (
-        <div className="flex justify-between cursor-pointer pt-4"
+        <div className="flex justify-between cursor-pointer pt-8 pr-8"
             onClick={onClick}
         >   
             {open ? <Close /> : <AccountCircleIcon fontSize="large"/>}

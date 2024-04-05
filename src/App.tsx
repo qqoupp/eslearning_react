@@ -1,24 +1,38 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useEffect } from "react";
+import backgroundImage from "./components/Images/background.svg";
 import "./App.css";
 import MainRouter from "./routers/MainRouter";
-import Container from "./components/Container";
-import { ThemeProvider } from "@mui/material/styles"; // Import ThemeProvider
-import theme from "./Theme/index"; // Import your custom theme
-import { CssBaseline } from "@mui/material";
+import { ThemeProvider, CssBaseline} from "@mui/material";
+import theme from "./Theme/index";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserProvider from "./providers/userProvider";
+import Container from "./components/Container";
+
 
 function App() {
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.body.style.backgroundRepeat = 'no-repeat';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundAttachment = 'fixed';
+
+    return () => {
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundRepeat = '';
+      document.body.style.backgroundSize = '';
+      document.body.style.backgroundAttachment = '';
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline /> 
       <UserProvider>
-        <CssBaseline />
         <Container>
           <MainRouter />
-          <ToastContainer />
         </Container>
+        <ToastContainer />
       </UserProvider>
     </ThemeProvider>
   );
