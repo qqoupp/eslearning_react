@@ -51,7 +51,7 @@ const Profile = () => {
           maxHeight: "1500px",
           padding: "20px",
           margin: "20px",
-          backgroundColor: "white",
+          backgroundColor: "rgba(255, 255, 255, 0.6)",
           overflow: "auto",
         }}
       >
@@ -73,7 +73,7 @@ const Profile = () => {
         <List>
           {userRequests.map((request) => (
             <ListItem key={request.id}>
-              <div className="border-b-2 border-t-2 border-black">
+              <div className="border-2 pt-1 pr-1 pl-1 border-black">
                 <span className="font-bold text-lg">
                   Date and time of creation:{" "}
                 </span>

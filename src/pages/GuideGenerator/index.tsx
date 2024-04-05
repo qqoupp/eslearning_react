@@ -28,6 +28,8 @@ const GuideGenerator = () => {
   const [messages, setMessages] = React.useState<string[]>([]);
   const [userInput, setUserInput] = React.useState<string>("");
   const [technology, setTechnology] = React.useState<string>("");
+  const [showPaper, setShowPaper] = React.useState(false);
+
 
   const myRef = React.useRef<HTMLDivElement>(null);
 
@@ -62,10 +64,25 @@ const GuideGenerator = () => {
   };
 
   const handleSubmit = async () => {
+    setShowPaper(true)
     const selectedTechNames = selectedTechnologies
       .map((tech) => tech.name)
       .join(", ");
-    const prompt = `I want a guide for building a program using: ${selectedTechNames} this is what i want it to do: ${description}`;
+      const prompt = `
+      Create a comprehensive guide outlining the learning path and development steps necessary for a project based on the following technologies and description. Focus on sequentially ordered learning topics and practical project development stages.
+
+      Technologies: ${selectedTechNames}
+      Project Description: ${description}
+
+      The guide should include:
+      1. A step-by-step learning path detailing the key concepts and skills to be acquired for using each technology effectively.
+      2. Specific resources (e.g., online courses, tutorials, documentation) where these concepts can be learned.
+      3. A breakdown of the project development process into manageable steps, indicating what to learn or apply at each stage.
+      4. Practical tips for applying the learned technologies in the context of the described project.
+      5. Any additional advice on troubleshooting common issues and leveraging community resources for help.
+
+      Aim to provide a clear and actionable guide that will enable someone with basic programming knowledge to start the project, learn the necessary technologies, and successfully build the project as described.
+    `;
     setUserInput(description);
     setTechnology(selectedTechNames);
     if (!description.trim()) return;
@@ -76,6 +93,9 @@ const GuideGenerator = () => {
     try {
       const reader = await fetchStream(prompt);
       const decoder = new TextDecoder();
+      if (myRef.current) {
+        myRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
 
       const processChunk = async () => {
         const { done, value } = await reader.read();
@@ -100,9 +120,6 @@ const GuideGenerator = () => {
           }
         }
         await processChunk();
-        if (myRef.current) {
-          myRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
       };
 
       await processChunk();
@@ -124,10 +141,10 @@ const GuideGenerator = () => {
     <React.Fragment>
       <div className="p-12">
         <Grid container spacing={3}>
-          <Grid item xs={5}>
+        <Grid item xs={12} sm={6} md={5} lg={4}>
             <Image5 />
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={12} sm={6} md={7} lg={8}>
             <div
               style={{
                 display: "flex",
@@ -203,15 +220,18 @@ const GuideGenerator = () => {
             </div>
           </Grid>
         </Grid>
-        <div ref={myRef} style={{ width: "100%" }} className="pt-40">
+        {showPaper && (
+
+        <div style={{ width: "100%" }} className="pt-60">
           <Paper
             elevation={5}
-            
+            ref={myRef} 
             style={{
+              height: "850px",
               width: "100%",
               padding: "20px",
               margin: "20px",
-              backgroundColor: "inherit",
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
               overflow: "auto",
             }}
           >
@@ -238,6 +258,7 @@ const GuideGenerator = () => {
           )}
           </Paper>
         </div>
+        )}
       </div>
     </React.Fragment>
   );
