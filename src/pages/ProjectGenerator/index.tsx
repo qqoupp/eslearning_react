@@ -1,5 +1,5 @@
-import react from 'react';
 import BasicExampleDataGrid from '../../components/ProjectIdeea';
+import React from 'react';
 
 const ProjectGenerator = () => {
     return (

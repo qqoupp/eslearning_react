@@ -26,6 +26,7 @@ const GuideGenerator = () => {
   >([]);
   const [description, setDescription] = React.useState<string>("");
   const [messages, setMessages] = React.useState<string[]>([]);
+  const [text, setText] = React.useState<string>("");
   const [userInput, setUserInput] = React.useState<string>("");
   const [technology, setTechnology] = React.useState<string>("");
   const [showPaper, setShowPaper] = React.useState(false);
@@ -69,19 +70,13 @@ const GuideGenerator = () => {
       .map((tech) => tech.name)
       .join(", ");
       const prompt = `
-      Create a comprehensive guide outlining the learning path and development steps necessary for a project based on the following technologies and description. Focus on sequentially ordered learning topics and practical project development stages.
+      Create a comprehensive guide outlining the learning path and development steps necessary for a project based on the following technologies and description.
 
       Technologies: ${selectedTechNames}
       Project Description: ${description}
 
-      The guide should include:
-      1. A step-by-step learning path detailing the key concepts and skills to be acquired for using each technology effectively.
-      2. Specific resources (e.g., online courses, tutorials, documentation) where these concepts can be learned.
-      3. A breakdown of the project development process into manageable steps, indicating what to learn or apply at each stage.
-      4. Practical tips for applying the learned technologies in the context of the described project.
-      5. Any additional advice on troubleshooting common issues and leveraging community resources for help.
-
-      Aim to provide a clear and actionable guide that will enable someone with basic programming knowledge to start the project, learn the necessary technologies, and successfully build the project as described.
+      The guide should include a high-level overview of the project, the technologies used, and the steps required to build the project. Do not tell the user what to learn, but rather actionable coding steps.
+      Examples of code snippets should not be included in the guide, but references to relevant documentation and resources are encouraged.
     `;
     setUserInput(description);
     setTechnology(selectedTechNames);
@@ -89,7 +84,7 @@ const GuideGenerator = () => {
 
     setMessages([]); // Clear previous messages if any
     let paragraph = ""; // Holds ongoing text
-    
+    setText(""); // Clear previous text if any
     try {
       const reader = await fetchStream(prompt);
       const decoder = new TextDecoder();
@@ -108,17 +103,24 @@ const GuideGenerator = () => {
         const lines = text.split("\n"); // Split text into lines
 
         for (const line of lines) {
-          if (line === "") {
-            // Empty line signifies a paragraph break
-            if (paragraph) {
-              setMessages((prev) => [...prev, paragraph.trim()]);
-              paragraph = "";
-            }
-          } else {
-            // Add the line to the current paragraph, add a space to separate from the previous line
-            paragraph += line + " ";
-          }
+          // if (line === "") {
+          //   // Empty line signifies a paragraph break
+          //   if (paragraph) {
+          //     setMessages((prev) => [...prev, paragraph.trim()]);
+          //     paragraph = "";
+          //   }
+          // } else {
+          //   // Add the line to the current paragraph, add a space to separate from the previous line
+          //   paragraph += line + " ";
+          // }
+
+          
+          
         }
+
+        paragraph = text;
+          setText((prev) => prev + text);
+
         await processChunk();
       };
 
@@ -235,7 +237,7 @@ const GuideGenerator = () => {
               overflow: "auto",
             }}
           >
-          {messages.map((msg, index) => (
+          {/* {messages.map((msg, index) => (
             <Typography
               variant="inherit"
               key={index}
@@ -247,8 +249,9 @@ const GuideGenerator = () => {
             >
               {msg}
             </Typography>
-          ))}
-          {messages.length === 0 ? null : (
+          ))} */}
+          {text}
+          {text.length === 0 ? null : (
             <button
               onClick={handleSave}
               className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
