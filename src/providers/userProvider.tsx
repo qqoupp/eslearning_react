@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {accessTokenVerification, refreshToken} from "../api/tokenApi";
+import { accessTokenVerification, refreshToken } from "../api/tokenApi";
 import useToast from "../hooks/useToast";
 import { toast } from "react-toastify";
 
@@ -29,9 +29,7 @@ export const UserContext = createContext<UserContextType>({
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
-
 const UserProvider = ({ children }: any) => {
- 
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
@@ -41,34 +39,52 @@ const UserProvider = ({ children }: any) => {
 
   const decodedTokenValue = decodedToken(token);
 
+  const accessFreeUri = ["/", "/signin", "/signup"];
+
   useEffect(() => {
+    if (!token) {
+      setIsLoggedIn(false);
+
+      //get uri
+      const uri = window.location.pathname;
+
+      //if uri is not in accessFreeUri, redirect to signin
+      if (!accessFreeUri.includes(uri)) {
+        navigate("/signin");
+      }
+
+      return;
+    }
+
     if (!decodedTokenValue || decodedTokenValue?.exp * 1000 < Date.now()) {
-      refreshToken({ email: user?.email }).then((response) => {
-        if (response.success) {
-          localStorage.setItem("LLMUNI_TOKEN", response.accessToken);
-          setIsLoggedIn(true);
-          console.log("Token refreshed");
-        } else {
+      refreshToken({ email: user?.email })
+        .then((response) => {
+          console.log("response", response);
+          if (response.success) {
+            localStorage.setItem("LLMUNI_TOKEN", response.accessToken);
+            setIsLoggedIn(true);
+            console.log("Token refreshed");
+          } else {
+            localStorage.removeItem("LLMUNI_TOKEN");
+            setIsLoggedIn(false);
+
+            toast.error("Session expired, please sign in again");
+            navigate("/signin");
+
+            console.log("Token not refreshed");
+          }
+        })
+        .catch((error) => {
+          console.error("Error refreshing token:", error);
           localStorage.removeItem("LLMUNI_TOKEN");
           setIsLoggedIn(false);
-          if(isLoggedIn){
-            toast.error("Session expired, please sign in again");
-            navigate('/signin');
-          }
-          console.log("Token not refreshed");
-        }
-      }).catch((error) => {
-        console.error("Error refreshing token:", error);
-        localStorage.removeItem("LLMUNI_TOKEN");
-        setIsLoggedIn(false);
-        navigate('/signin');
-      });
+          navigate("/signin");
+        });
     } else {
       setIsLoggedIn(true);
     }
   }, [navigate, decodedTokenValue, user]);
-  
-  
+
   useEffect(() => {
     if (decodedTokenValue) {
       setUser(decodedTokenValue);
@@ -80,10 +96,10 @@ const UserProvider = ({ children }: any) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('LLMUNI_TOKEN');
+    localStorage.removeItem("LLMUNI_TOKEN");
     setUser(null);
     setIsLoggedIn(false);
-    navigate('/');
+    navigate("/");
   };
 
   const value = {

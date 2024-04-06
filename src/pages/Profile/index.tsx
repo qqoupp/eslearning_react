@@ -71,7 +71,7 @@ const Profile = () => {
           History
         </Typography>
         <List>
-          {userRequests.map((request) => (
+          {userRequests && userRequests.length > 0 && userRequests.map((request) => (
             <ListItem key={request.id}>
               <div className="border-2 pt-1 pr-1 pl-1 border-black">
                 <span className="font-bold text-lg">
