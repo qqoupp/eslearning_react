@@ -31,7 +31,7 @@ const SignIn = () => {
          setError(null);
          toast.success("Logged in successfully");
          setTimeout(() => {
-           navigate("/");
+           navigate("/landin");
          }, 1000);
        }
     } catch (error) {

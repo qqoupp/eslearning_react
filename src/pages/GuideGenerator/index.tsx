@@ -31,7 +31,6 @@ const GuideGenerator = () => {
   const [technology, setTechnology] = React.useState<string>("");
   const [showPaper, setShowPaper] = React.useState(false);
 
-
   const myRef = React.useRef<HTMLDivElement>(null);
 
   const handleTechnologySelection = (newSelection: TechnologiesProps[]) => {
@@ -65,11 +64,11 @@ const GuideGenerator = () => {
   };
 
   const handleSubmit = async () => {
-    setShowPaper(true)
+    setShowPaper(true);
     const selectedTechNames = selectedTechnologies
       .map((tech) => tech.name)
       .join(", ");
-      const prompt = `
+    const prompt = `
       Create a comprehensive guide outlining the learning path and development steps necessary for a project based on the following technologies and description.
 
       Technologies: ${selectedTechNames}
@@ -89,7 +88,7 @@ const GuideGenerator = () => {
       const reader = await fetchStream(prompt);
       const decoder = new TextDecoder();
       if (myRef.current) {
-        myRef.current.scrollIntoView({ behavior: 'smooth' });
+        myRef.current.scrollIntoView({ behavior: "smooth" });
       }
 
       const processChunk = async () => {
@@ -113,13 +112,10 @@ const GuideGenerator = () => {
           //   // Add the line to the current paragraph, add a space to separate from the previous line
           //   paragraph += line + " ";
           // }
-
-          
-          
         }
 
         paragraph = text;
-          setText((prev) => prev + text);
+        setText((prev) => prev + text);
 
         await processChunk();
       };
@@ -143,7 +139,7 @@ const GuideGenerator = () => {
     <React.Fragment>
       <div className="p-12">
         <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={5} lg={4}>
+          <Grid item xs={12} sm={6} md={5} lg={4}>
             <Image5 />
           </Grid>
           <Grid item xs={12} sm={6} md={7} lg={8}>
@@ -223,21 +219,20 @@ const GuideGenerator = () => {
           </Grid>
         </Grid>
         {showPaper && (
-
-        <div style={{ width: "100%" }} className="pt-60">
-          <Paper
-            elevation={5}
-            ref={myRef} 
-            style={{
-              height: "850px",
-              width: "100%",
-              padding: "20px",
-              margin: "20px",
-              backgroundColor: "rgba(255, 255, 255, 0.6)",
-              overflow: "auto",
-            }}
-          >
-          {/* {messages.map((msg, index) => (
+          <div style={{ width: "100%" }} className="pt-60">
+            <Paper
+              elevation={5}
+              ref={myRef}
+              style={{
+                height: "850px",
+                width: "100%",
+                padding: "20px",
+                margin: "20px",
+                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                overflow: "auto",
+              }}
+            >
+              {/* {messages.map((msg, index) => (
             <Typography
               variant="inherit"
               key={index}
@@ -250,17 +245,17 @@ const GuideGenerator = () => {
               {msg}
             </Typography>
           ))} */}
-          {text}
-          {text.length === 0 ? null : (
-            <button
-              onClick={handleSave}
-              className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
-            >
-              Save
-            </button>
-          )}
-          </Paper>
-        </div>
+              {text}
+              {text.length === 0 ? null : (
+                <button
+                  onClick={handleSave}
+                  className="w-40 h-10 bg-costum hover:opacity-50 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Save
+                </button>
+              )}
+            </Paper>
+          </div>
         )}
       </div>
     </React.Fragment>

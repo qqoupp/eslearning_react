@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "../components/Header";
+import LandingPage2 from "../pages/LandingPage2";
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Profile = React.lazy(() => import("../pages/Profile"));
 const SignUp = React.lazy(() => import("../pages/SignUp"));
@@ -26,6 +27,14 @@ const MainRouter = () => {
             }
           />
           <Route
+            path="/landingpage"
+            element={
+              <>
+                <LandingPage2 />
+              </>
+            }
+          />
+          <Route
             path="/signup"
             element={
               <>
@@ -45,33 +54,33 @@ const MainRouter = () => {
             path="/profile"
             element={
               <>
-                <Profile/>
+                <Profile />
               </>
             }
           />
           <Route
-            path="/Guide"
+            path="/guide"
             element={
               <>
-                <GuideGenerator/>
+                <GuideGenerator />
               </>
             }
           />
           <Route
-          path="/project"
-          element={
-            <>
-              <ProjectGenerator/>
-            </>
-          }
+            path="/project"
+            element={
+              <>
+                <ProjectGenerator />
+              </>
+            }
           />
           <Route
-          path="/about"
-          element={
-            <>
-              <About/>
-            </>
-          }
+            path="/about"
+            element={
+              <>
+                <About />
+              </>
+            }
           />
         </Routes>
       </React.Suspense>

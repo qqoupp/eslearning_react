@@ -35,7 +35,7 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
             color: "white",
           }}
         >
-          <div className="px-5 py-7 min-h-screen">
+          <div className="px-5 py-7 min-h-screen w-72">
             <div className="flex flex-col justify-between gap-y-5">
               <div className="flex flex-col pb-40 gap-0">
                 <span className="font-bold text-xl text-white">Elevate</span>

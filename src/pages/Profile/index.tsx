@@ -71,56 +71,58 @@ const Profile = () => {
           History
         </Typography>
         <List>
-          {userRequests && userRequests.length > 0 && userRequests.map((request) => (
-            <ListItem key={request.id}>
-              <div className="border-2 pt-1 pr-1 pl-1 border-black">
-                <span className="font-bold text-lg">
-                  Date and time of creation:{" "}
-                </span>
-                <br />
-                <Typography component="span" variant="body1">
-                  {request.createdAt.slice(0, 10) +
-                    " " +
-                    request.createdAt.slice(11, 16)}
-                </Typography>
-                <br />
-                <span className="font-bold text-lg">
-                  Selected technologies:{" "}
-                </span>
-                <br />
-                <Typography component="span" variant="body1">
-                  {request.technology}
-                </Typography>
-                <br />
-                <span className="font-bold text-lg">
-                  Project description:{" "}
-                </span>
-                <br />
-                <Typography component="span" variant="body1">
-                  {request.input}
-                </Typography>
-                <br />
-                <span className="font-bold text-lg">
-                  Generated project guide:{" "}
-                </span>
-                <br />
-                <Typography component="span" variant="body1">
-                  {request.output}
-                </Typography>
-                <br />
-                <div className="p-1 flex flex-row justify-between">
-                  <div></div>
-                  <div></div>
-                  <button
-                    className="font-bold border-2 border-black p-1"
-                    onClick={() => handleDeleteUserRequest(request.id)}
-                  >
-                    Delete
-                  </button>
+          {userRequests &&
+            userRequests.length > 0 &&
+            userRequests.map((request) => (
+              <ListItem key={request.id}>
+                <div className="border-2 pt-1 pr-1 pl-1 border-black">
+                  <span className="font-bold text-lg">
+                    Date and time of creation:{" "}
+                  </span>
+                  <br />
+                  <Typography component="span" variant="body1">
+                    {request.createdAt.slice(0, 10) +
+                      " " +
+                      request.createdAt.slice(11, 16)}
+                  </Typography>
+                  <br />
+                  <span className="font-bold text-lg">
+                    Selected technologies:{" "}
+                  </span>
+                  <br />
+                  <Typography component="span" variant="body1">
+                    {request.technology}
+                  </Typography>
+                  <br />
+                  <span className="font-bold text-lg">
+                    Project description:{" "}
+                  </span>
+                  <br />
+                  <Typography component="span" variant="body1">
+                    {request.input}
+                  </Typography>
+                  <br />
+                  <span className="font-bold text-lg">
+                    Generated project guide:{" "}
+                  </span>
+                  <br />
+                  <Typography component="span" variant="body1">
+                    {request.output}
+                  </Typography>
+                  <br />
+                  <div className="p-1 flex flex-row justify-between">
+                    <div></div>
+                    <div></div>
+                    <button
+                      className="font-bold border-2 border-black p-1"
+                      onClick={() => handleDeleteUserRequest(request.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </ListItem>
-          ))}
+              </ListItem>
+            ))}
         </List>
       </Paper>
     </div>
