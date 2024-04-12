@@ -7,6 +7,8 @@ import { fetchStream } from "../../api/openAI";
 import { UserContext } from "../../providers/userProvider";
 import { saveUserRequest } from "../../api/userRequest";
 import Image5 from "../../components/Images/index5";
+import { addLearningPath } from "../../api/learningPathApi";
+import { json } from "stream/consumers";
 
 export type TechnologiesProps = {
   name: string;
@@ -70,10 +72,10 @@ const GuideGenerator = () => {
       .join(", ");
     const prompt = `
       Create a comprehensive guide outlining the learning path and development steps necessary for a project based on the following technologies and description.
-
+  
       Technologies: ${selectedTechNames}
       Project Description: ${description}
-
+  
       The guide should include a high-level overview of the project, the technologies used, and the steps required to build the project. Do not tell the user what to learn, but rather actionable coding steps.
       Examples of code snippets should not be included in the guide, but references to relevant documentation and resources are encouraged.
     `;
@@ -82,11 +84,19 @@ const GuideGenerator = () => {
     if (!description.trim()) return;
 
     setMessages([]); // Clear previous messages if any
-    let paragraph = ""; // Holds ongoing text
     setText(""); // Clear previous text if any
+    let completeText = ""; // Initialize a variable to hold the complete response text
+
     try {
       const reader = await fetchStream(prompt);
       const decoder = new TextDecoder();
+      const userId = user?.id;
+
+      if (!userId) {
+        console.error("User ID not found");
+        return;
+      }
+
       if (myRef.current) {
         myRef.current.scrollIntoView({ behavior: "smooth" });
       }
@@ -94,28 +104,21 @@ const GuideGenerator = () => {
       const processChunk = async () => {
         const { done, value } = await reader.read();
         if (done) {
-          if (paragraph) setMessages((prev) => [...prev, paragraph.trim()]);
           console.log("Stream completed");
+          setText(completeText); // Set the complete text as the final response
+          // Try to parse the accumulated text as JSON
+          try {
+            const jsonResponse = JSON.parse(completeText);
+            console.log("JSON Response:", jsonResponse);
+            // Here you can set a state with jsonResponse or handle it as needed
+            addLearningPath(userId, jsonResponse);
+          } catch (error) {
+            console.error("Failed to parse JSON", error);
+          }
           return;
         }
-        const text = decoder.decode(value);
-        const lines = text.split("\n"); // Split text into lines
-
-        for (const line of lines) {
-          // if (line === "") {
-          //   // Empty line signifies a paragraph break
-          //   if (paragraph) {
-          //     setMessages((prev) => [...prev, paragraph.trim()]);
-          //     paragraph = "";
-          //   }
-          // } else {
-          //   // Add the line to the current paragraph, add a space to separate from the previous line
-          //   paragraph += line + " ";
-          // }
-        }
-
-        paragraph = text;
-        setText((prev) => prev + text);
+        const textChunk = decoder.decode(value);
+        completeText += textChunk; // Accumulate the text chunks
 
         await processChunk();
       };
@@ -232,19 +235,6 @@ const GuideGenerator = () => {
                 overflow: "auto",
               }}
             >
-              {/* {messages.map((msg, index) => (
-            <Typography
-              variant="inherit"
-              key={index}
-              style={{
-                marginBottom: "0.5rem",
-                lineHeight: "1.6",
-                whiteSpace: "pre-wrap", // Allows natural breaks and white space
-              }}
-            >
-              {msg}
-            </Typography>
-          ))} */}
               {text}
               {text.length === 0 ? null : (
                 <button

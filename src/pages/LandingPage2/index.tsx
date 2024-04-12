@@ -27,7 +27,7 @@ const LandingPage2 = () => {
         </div>
       </Fade>
       <div className="flex justify-center gap-1 pt-20">
-        <div>
+          <Link to={"/learningpath"}>
           <Fade in={animationReady} timeout={500}>
             <a
               href="#_"
@@ -39,7 +39,7 @@ const LandingPage2 = () => {
               </span>
             </a>
           </Fade>
-        </div>
+          </Link>
         <Link to={"/guide"}>
           <Fade in={animationReady} timeout={500}>
             <a

@@ -33,6 +33,7 @@ const theme = createTheme({
         fontSize: '1.5rem', // Even larger font size on large screens and up
       },
     },
+    
   },
 });
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "../components/Header";
-import LandingPage2 from "../pages/LandingPage2";
+const LandingPage2 = React.lazy(() => import("../pages/LandingPage2"));
 const LandingPage = React.lazy(() => import("../pages/LandingPage"));
 const Profile = React.lazy(() => import("../pages/Profile"));
 const SignUp = React.lazy(() => import("../pages/SignUp"));
@@ -9,6 +9,7 @@ const SignIn = React.lazy(() => import("../pages/SignIn"));
 const GuideGenerator = React.lazy(() => import("../pages/GuideGenerator"));
 const About = React.lazy(() => import("../pages/About"));
 const ProjectGenerator = React.lazy(() => import("../pages/ProjectGenerator"));
+const LearningPath = React.lazy(() => import("../pages/LearningPath/index"));
 
 const Loading = () => <p>Loading ...</p>;
 
@@ -82,6 +83,14 @@ const MainRouter = () => {
               </>
             }
           />
+        <Route
+          path="/learningpath"
+          element={
+            <>
+              <LearningPath />
+            </>
+          }
+        />
         </Routes>
       </React.Suspense>
     </>
