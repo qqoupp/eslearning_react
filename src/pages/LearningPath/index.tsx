@@ -2,10 +2,33 @@ import React, { useEffect, useState } from "react";
 import { UserContext } from "../../providers/userProvider";
 import { getLearningPath } from "../../api/learningPathApi";
 import { List, ListItem, Paper, Typography } from "@mui/material";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import { fetchInstructionStream } from "../../api/openAI";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  height: 800,
+  overflow: "auto",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 2,
+  p: 4,
+} as const;
 
 const LearningPath = () => {
   const { user } = React.useContext(UserContext);
   const [learningPath, setLearningPath] = useState<LearningPath[]>([]);
+  const [open, setOpen] = React.useState(false);
+  const [text, setText] = React.useState("");
+  const handleClose = () => setOpen(false);
+
 
   interface LearningPath {
     id: number;
@@ -15,6 +38,43 @@ const LearningPath = () => {
     output: string;
     completed: boolean;
   }
+
+  const handleOpen = async (technology: string,instruction: string, description:string) => {
+    setOpen(true);
+    const prompt = `
+        Using ${technology}, ${instruction}. Description: ${description}
+      Examples of code snippets should not be included in the guide, but references to relevant documentation and resources are encouraged.
+    `;
+    setText(""); // Clear previous text if any
+    let completeText = ""; // Initialize a variable to hold the complete response text
+
+    try {
+      const reader = await fetchInstructionStream(prompt);
+      const decoder = new TextDecoder();
+      const userId = user?.id;
+
+      if (!userId) {
+        console.error("User ID not found");
+        return;
+      }
+      const processChunk = async () => {
+        const { done, value } = await reader.read();
+        if (done) {
+          console.log("Stream completed");
+          setText(completeText); 
+          return;
+        }
+        const textChunk = decoder.decode(value);
+        completeText += textChunk; // Accumulate the text chunks
+
+        await processChunk();
+      };
+
+      await processChunk();
+    } catch (error) {
+      console.error("Failed to read stream", error);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -63,8 +123,6 @@ const LearningPath = () => {
                     }}
                   >
                     <div className="pt-1 pr-1 pl-1">
-                      <span className="font-bold text-lg">name: </span>
-                      <br />
                       <Typography component="span" variant="body1">
                         {request.name}
                       </Typography>
@@ -81,6 +139,34 @@ const LearningPath = () => {
                         {request.description}
                       </Typography>
                       <br />
+                      <DoneOutlineIcon
+                        sx={{ color: "green" }}
+                      ></DoneOutlineIcon>
+                      <div>
+                      <Button onClick={() => handleOpen(request.name, request.instruction, request.description)}>Explore more</Button>
+
+                        <Modal
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                          BackdropProps={{
+                            style: {
+                              backgroundColor: 'transparent', // Sets the backdrop color to fully transparent
+                            },
+                          }}
+
+                        >
+                          <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                              Guide
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                              {text}
+                            </Typography>
+                          </Box>
+                        </Modal>
+                      </div>
                     </div>
                   </Paper>
                 </ListItem>
