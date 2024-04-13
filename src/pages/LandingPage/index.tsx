@@ -178,7 +178,7 @@ const LandingPage: React.FC = () => {
             <div className="">
               <Grid container spacing={0.5}>
                 {filteredCards?.map((data, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Grid item xs={12} sm={6} md={4} key={data.name}>
                     <CustomCard {...data} />
                   </Grid>
                 ))}
