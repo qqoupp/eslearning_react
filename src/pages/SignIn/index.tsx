@@ -31,7 +31,7 @@ const SignIn = () => {
          setError(null);
          toast.success("Logged in successfully");
          setTimeout(() => {
-           navigate("/landin");
+           navigate("/landingpage");
          }, 1000);
        }
     } catch (error) {
@@ -63,12 +63,19 @@ const SignIn = () => {
           id="password"
           onChange={handleChange}
         />
-        <button
-          type="submit"
-          className="bg-costum text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          Sign In
-        </button>
+               <div className="flex justify-center">
+          <button
+            type="submit"
+            className={`relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-costum hover:bg-white group border-black border-2 hover:border-black rounded-xl 
+            }`}
+            style={{ width: "100%" }}
+          >
+            <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+            <span className="relative w-full text-center text-white transition-colors duration-300 ease-in-out group-hover:text-black">
+              Sign in
+            </span>
+          </button>
+        </div>
       </form>
       <div className="flex gap-2 mt-5">
         <p>Dont have an account?</p>
