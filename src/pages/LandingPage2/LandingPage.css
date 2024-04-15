@@ -1,0 +1,31 @@
+@keyframes scaleUp {
+    from {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .landing-page-container {
+    transform-origin: top left;
+  }
+  
+  .landing-page-container.scale-up {
+    animation: scaleUp 0.5s ease forwards;
+  }
+  
+  .landing-page-text {
+    opacity: 0;
+  }
+  
+  .landing-page-text.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  .landing-page-button.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  

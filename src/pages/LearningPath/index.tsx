@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { fetchInstructionStream } from "../../api/openAI";
+import { addLearningPathInstructions } from "../../api/lpInstructionApi";
 
 const style = {
   position: "absolute",
@@ -39,7 +40,7 @@ const LearningPath = () => {
     completed: boolean;
   }
 
-  const handleOpen = async (technology: string,instruction: string, description:string) => {
+  const handleOpen = async (technology: string,instruction: string, description:string, learningPathId:number) => {
     setOpen(true);
     const prompt = `
         Using ${technology}, ${instruction}. Description: ${description}
@@ -62,6 +63,15 @@ const LearningPath = () => {
         if (done) {
           console.log("Stream completed");
           setText(completeText); 
+          try {
+            const jsonResponse = JSON.parse(completeText);
+            console.log("JSON Response:", jsonResponse);
+            addLearningPathInstructions(learningPathId, jsonResponse);
+          } catch (error) {
+            console.error("Failed to parse JSON", error);
+          }
+        const textChunk = decoder.decode(value);
+        completeText += textChunk; // Accumulate the text chunks
           return;
         }
         const textChunk = decoder.decode(value);
@@ -143,7 +153,7 @@ const LearningPath = () => {
                         sx={{ color: "green" }}
                       ></DoneOutlineIcon>
                       <div>
-                      <Button onClick={() => handleOpen(request.name, request.instruction, request.description)}>Explore more</Button>
+                      <Button onClick={() => handleOpen(request.name, request.instruction, request.description, request.id)}>Explore more</Button>
 
                         <Modal
                           open={open}
