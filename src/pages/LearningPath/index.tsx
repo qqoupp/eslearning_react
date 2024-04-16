@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { UserContext } from "../../providers/userProvider";
 import { getLearningPath } from "../../api/learningPathApi";
-import { List, ListItem, Paper, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  List,
+  ListItem,
+  Paper,
+  Typography,
+} from "@mui/material";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { fetchInstructionStream } from "../../api/openAI";
-import { addLearningPathInstructions } from "../../api/lpInstructionApi";
+import {
+  addLearningPathInstructions,
+  getLearningPathInstructions,
+} from "../../api/lpInstructionApi";
 
 const style = {
   position: "absolute",
@@ -27,9 +36,20 @@ const LearningPath = () => {
   const { user } = React.useContext(UserContext);
   const [learningPath, setLearningPath] = useState<LearningPath[]>([]);
   const [open, setOpen] = React.useState(false);
-  const [text, setText] = React.useState("");
-  const handleClose = () => setOpen(false);
+  const [instructions, setInstructions] = useState<Instruction[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleClose = () => {
+    setOpen(false);
+    setInstructions([]); // Clear instructions on close
+  };
+
+  interface Instruction {
+    id: number;
+    learningPathId: number;
+    step: string;
+    solution: string;
+  }
 
   interface LearningPath {
     id: number;
@@ -40,49 +60,63 @@ const LearningPath = () => {
     completed: boolean;
   }
 
-  const handleOpen = async (technology: string,instruction: string, description:string, learningPathId:number) => {
+  const handleOpen = async (
+    technology: string,
+    instruction: string,
+    description: string,
+    learningPathId: number
+  ) => {
     setOpen(true);
+    setIsLoading(true);
     const prompt = `
         Using ${technology}, ${instruction}. Description: ${description}
       Examples of code snippets should not be included in the guide, but references to relevant documentation and resources are encouraged.
     `;
-    setText(""); // Clear previous text if any
-    let completeText = ""; // Initialize a variable to hold the complete response text
+    let completeText = "";
 
     try {
-      const reader = await fetchInstructionStream(prompt);
-      const decoder = new TextDecoder();
-      const userId = user?.id;
+      const existingInstructions =
+        await getLearningPathInstructions(learningPathId);
+      if (existingInstructions.length > 0) {
+        setInstructions(existingInstructions);
+      } else {
+        const reader = await fetchInstructionStream(prompt);
+        const decoder = new TextDecoder();
+        const userId = user?.id;
 
-      if (!userId) {
-        console.error("User ID not found");
-        return;
-      }
-      const processChunk = async () => {
-        const { done, value } = await reader.read();
-        if (done) {
-          console.log("Stream completed");
-          setText(completeText); 
-          try {
-            const jsonResponse = JSON.parse(completeText);
-            console.log("JSON Response:", jsonResponse);
-            addLearningPathInstructions(learningPathId, jsonResponse);
-          } catch (error) {
-            console.error("Failed to parse JSON", error);
-          }
-        const textChunk = decoder.decode(value);
-        completeText += textChunk; // Accumulate the text chunks
+        if (!userId) {
+          console.error("User ID not found");
           return;
         }
-        const textChunk = decoder.decode(value);
-        completeText += textChunk; // Accumulate the text chunks
+        const processChunk = async () => {
+          const { done, value } = await reader.read();
+          if (done) {
+            console.log("Stream completed");
+            try {
+              const jsonResponse = JSON.parse(completeText);
+              console.log("JSON Response:", jsonResponse);
+              setInstructions(jsonResponse.task);
+              addLearningPathInstructions(learningPathId, userId, jsonResponse);
+            } catch (error) {
+              console.error("Failed to parse JSON", error);
+              setIsLoading(false);
+            }
+            const textChunk = decoder.decode(value);
+            completeText += textChunk; // Accumulate the text chunks
+            return;
+          }
+          const textChunk = decoder.decode(value);
+          completeText += textChunk; // Accumulate the text chunks
+
+          await processChunk();
+        };
 
         await processChunk();
-      };
-
-      await processChunk();
+      }
     } catch (error) {
       console.error("Failed to read stream", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,14 +142,10 @@ const LearningPath = () => {
         </Typography>
       </div>
       <div className="flex justify-center">
-        <Paper
-          elevation={3}
+        <div
           style={{
             width: "1300px",
-            maxHeight: "1500px",
             margin: "20px",
-            backgroundColor: "rgba(255, 255, 255, 0.6)",
-            overflow: "auto",
           }}
         >
           <List>
@@ -149,12 +179,24 @@ const LearningPath = () => {
                         {request.description}
                       </Typography>
                       <br />
-                      <DoneOutlineIcon
-                        sx={{ color: "green" }}
-                      ></DoneOutlineIcon>
-                      <div>
-                      <Button onClick={() => handleOpen(request.name, request.instruction, request.description, request.id)}>Explore more</Button>
-
+                      <div className="flex flex-row justify-between">
+                        <DoneOutlineIcon
+                          sx={{ color: "green" }}
+                        ></DoneOutlineIcon>
+                        <div>
+                          <Button
+                            onClick={() =>
+                              handleOpen(
+                                request.name,
+                                request.instruction,
+                                request.description,
+                                request.id
+                              )
+                            }
+                          >
+                            Explore more
+                          </Button>
+                        </div>
                         <Modal
                           open={open}
                           onClose={handleClose}
@@ -162,18 +204,42 @@ const LearningPath = () => {
                           aria-describedby="modal-modal-description"
                           BackdropProps={{
                             style: {
-                              backgroundColor: 'transparent', // Sets the backdrop color to fully transparent
+                              backgroundColor: "transparent", // Sets the backdrop color to fully transparent
                             },
                           }}
-
                         >
                           <Box sx={style}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                              Guide
-                            </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                              {text}
-                            </Typography>
+                            {isLoading ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  height: "100%",
+                                }}
+                              >
+                                <CircularProgress color="inherit" />
+                                <Typography
+                                  variant="h6"
+                                  component="h2"
+                                  sx={{ mt: 2 }}
+                                >
+                                  Generating...
+                                </Typography>
+                              </div>
+                            ) : (
+                              instructions.map((instruction) => (
+                                <Box key={instruction.id} sx={{ mb: 2 }}>
+                                  <Typography variant="h6" component="h4">
+                                    {instruction.step}
+                                  </Typography>
+                                  <Typography variant="body1">
+                                    {instruction.solution}
+                                  </Typography>
+                                </Box>
+                              ))
+                            )}
                           </Box>
                         </Modal>
                       </div>
@@ -182,7 +248,7 @@ const LearningPath = () => {
                 </ListItem>
               ))}
           </List>
-        </Paper>
+        </div>
       </div>
     </div>
   );

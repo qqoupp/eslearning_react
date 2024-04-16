@@ -2,14 +2,14 @@ import { Input, Paper } from "@material-ui/core";
 import React, { useEffect } from "react";
 import MultiSelect from "../../components/SelectTechnologies";
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import { Padding } from "@mui/icons-material";
 import { fetchStream } from "../../api/openAI";
 import { UserContext } from "../../providers/userProvider";
 import { saveUserRequest } from "../../api/userRequest";
 import Image5 from "../../components/Images/index5";
 import { addLearningPath } from "../../api/learningPathApi";
-import { json } from "stream/consumers";
+import { deleteAllLearningPathInstructions } from "../../api/lpInstructionApi";
 import { Link } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export type TechnologiesProps = {
   name: string;
@@ -33,6 +33,7 @@ const GuideGenerator = () => {
   const [userInput, setUserInput] = React.useState<string>("");
   const [technology, setTechnology] = React.useState<string>("");
   const [showPaper, setShowPaper] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const myRef = React.useRef<HTMLDivElement>(null);
 
@@ -41,21 +42,14 @@ const GuideGenerator = () => {
   };
 
   const handleSave = async () => {
-    console.log({
-      userId: user?.id,
-      technology: technology,
-      input: userInput,
-      output: messages.join("\n"),
-    });
-
-    // Only proceed if all values are defined
-    if (user?.id && userInput && messages.length > 0) {
+    if (user?.id) { // Ensure there's text from the handleSubmit process
       try {
+        // Use `text` instead of `messages.join("\n")` if that's the intended content to save
         const response = await saveUserRequest({
           userId: user.id,
           technology: technology,
           input: userInput,
-          output: messages.join("\n"),
+          output: text,
         });
         console.log("Save response:", response);
       } catch (error) {
@@ -67,6 +61,7 @@ const GuideGenerator = () => {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     setShowPaper(true);
     const selectedTechNames = selectedTechnologies
       .map((tech) => tech.name)
@@ -106,13 +101,12 @@ const GuideGenerator = () => {
         const { done, value } = await reader.read();
         if (done) {
           console.log("Stream completed");
-          setText(completeText); // Set the complete text as the final response
-          // Try to parse the accumulated text as JSON
+          setText(completeText);
           try {
             const jsonResponse = JSON.parse(completeText);
-            console.log("JSON Response:", jsonResponse);
-            // Here you can set a state with jsonResponse or handle it as needed
-            addLearningPath(userId, jsonResponse);
+            await deleteAllLearningPathInstructions(userId);
+            await addLearningPath(userId, jsonResponse);
+            await handleSave();
           } catch (error) {
             console.error("Failed to parse JSON", error);
           }
@@ -123,10 +117,14 @@ const GuideGenerator = () => {
 
         await processChunk();
       };
-
+      
       await processChunk();
+      
     } catch (error) {
       console.error("Failed to read stream", error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -212,7 +210,9 @@ const GuideGenerator = () => {
                 <div className="flex justify-center pt-5">
                   <a
                     href="#_"
-                    onClick={handleSubmit}
+                    onClick={() => {
+                      handleSubmit();
+                    }}
                     className="landing-page-button relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-costum hover:bg-white group border-black border-2 hover:border-black rounded-xl"
                   >
                     <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
@@ -239,21 +239,50 @@ const GuideGenerator = () => {
                 overflow: "auto",
               }}
             >
-              {text}
-              {text.length === 0 ? null : (
-                <Link to={"/learningpath"}>
-                <a
-                  href="#_"
-                  onClick={handleSave}
-
-                  className="landing-page-button relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-costum hover:bg-white group border-black border-2 hover:border-black rounded-xl"
+              {isLoading ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                  }}
                 >
-                  <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
-                  <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-black">
-                    Next Steps
-                  </span>
-                </a>
-              </Link>
+                  <Typography
+                    variant="h4"
+                    component="div"
+                    className="text-4xl md:text-5xl"
+                  >
+                    Generating...
+                  </Typography>
+                  <CircularProgress color="inherit" />
+                </div>
+              ) : (
+                <>
+                  {text}
+                  {text.length > 0 && (
+                    <div className="flex flex-col items-center justify-center pt-10">
+                    <Typography
+                      variant="body2"
+                      component="div"
+                      className="text-4xl md:text-5xl pt-3 pb-3"
+                    >
+                     Proceed to the next page, where you can view youre learning path.
+                    </Typography>
+                    <Link to={"/learningpath"}>
+                      <a
+                        href="#_"
+                        className="landing-page-button relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-costum hover:bg-white group border-black border-2 hover:border-black rounded-xl"
+                      >
+                        <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                        <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-black">
+                          View Learning Path
+                        </span>
+                      </a>
+                    </Link>
+                    </div>
+                  )}
+                </>
               )}
             </Paper>
           </div>
