@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { UserContext } from "../../providers/userProvider";
-import { getLearningPath } from "../../api/learningPathApi";
+import {
+  changeCompletedStatus,
+  getLearningPath,
+} from "../../api/learningPathApi";
 import {
   CircularProgress,
   List,
@@ -17,20 +20,30 @@ import {
   addLearningPathInstructions,
   getLearningPathInstructions,
 } from "../../api/lpInstructionApi";
+import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
+import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import UnpublishedOutlinedIcon from "@mui/icons-material/UnpublishedOutlined";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 900,
-  height: 800,
+  width: '100%', // Use 100% to ensure it doesn't exceed the width of the screen
+  maxWidth: 900, // Use maxWidth to limit the size on larger screens
+  maxHeight: '90vh', // Use vh units for height to ensure it doesn't exceed the viewport height
   overflow: "auto",
   bgcolor: "background.paper",
   border: "2px solid #000",
-  boxShadow: 2,
+  boxShadow: 24,
   p: 4,
+  '@media (max-width:600px)': { // Adjustments for smaller screens
+    width: '90%', // Slightly smaller width on small screens
+    p: 2, // Smaller padding on small screens
+  }
 } as const;
+
 
 const LearningPath = () => {
   const { user } = React.useContext(UserContext);
@@ -38,6 +51,7 @@ const LearningPath = () => {
   const [open, setOpen] = React.useState(false);
   const [instructions, setInstructions] = useState<Instruction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [change, setChange] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -131,10 +145,10 @@ const LearningPath = () => {
           // Handle the error state
         });
     }
-  }, [user]);
+  }, [user, change]);
   return (
     <div>
-      <div className="flex justify-center p-16 pl-36 pr-36">
+      <div className="p-10">
         <Typography variant="h3" component="h1">
           Here, you can explore your personalized learning journey and monitor
           your advancements. Furthermore, you&apos;ll have access to in-depth
@@ -158,33 +172,86 @@ const LearningPath = () => {
                     style={{
                       width: "100%",
                       padding: "10px",
-                      backgroundColor: "rgba(255, 255, 255, 0.6)",
+                      backgroundColor: "rgba(255, 255, 255, 0.8)",
                       overflow: "auto",
                     }}
                   >
                     <div className="pt-1 pr-1 pl-1">
-                      <Typography component="span" variant="body1">
+                      <div className="flex flex-row justify-between">
+                      <Typography component="span" variant="body2">
                         {request.name}
                       </Typography>
-                      <br />
-                      <span className="font-bold text-lg">Instruction: </span>
-                      <br />
-                      <Typography component="span" variant="body1">
+                      {request.completed ? (
+                          <TaskAltOutlinedIcon
+                            onClick={() =>
+                              changeCompletedStatus(request.id)
+                                .then(() => setChange(!change))
+                                .catch((error) => {
+                                  console.error(
+                                    "Error changing status:",
+                                    error
+                                  );
+                                })
+                            }
+                            fontSize="large"
+                            sx={{ color: "green" }}
+                          ></TaskAltOutlinedIcon>
+                        ) : (
+                          <CircleOutlinedIcon
+                            onClick={() =>
+                              changeCompletedStatus(request.id)
+                                .then(() => setChange(!change))
+                                .catch((error) => {
+                                  console.error(
+                                    "Error changing status:",
+                                    error
+                                  );
+                                })
+                            }
+                            fontSize="large"
+                            sx={{ color: "green" }}
+                          ></CircleOutlinedIcon>
+                        )}
+                      </div>
+                     
+                      <Typography component="span" variant="body2">
                         {request.instruction}
                       </Typography>
                       <br />
-                      <span className="font-bold text-lg">Description: </span>
-                      <br />
-                      <Typography component="span" variant="body1">
+                      <br/>
+                  
+                      <Typography component="span" variant="body2">
                         {request.description}
                       </Typography>
                       <br />
+                      <div>
                       <div className="flex flex-row justify-between">
-                        <DoneOutlineIcon
-                          sx={{ color: "green" }}
-                        ></DoneOutlineIcon>
                         <div>
-                          <Button
+                        </div>
+                        <div className="flex justify-center gap-1 pt-3">
+                          <a
+                            href="#_"
+                            onClick={() =>
+                              changeCompletedStatus(request.id)
+                                .then(() => setChange(!change))
+                                .catch((error) => {
+                                  console.error(
+                                    "Error changing status:",
+                                    error
+                                  );
+                                })
+                            }
+                            className="landing-page-button relative inline-flex items-center justify-start px-1 py-1 overflow-hidden font-medium transition-all bg-costum group border-black border-2 rounded-l-xl hover:bg-white hover:border-black"
+                          >
+                            <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 right-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 mr-9 group-hover:mr-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                            <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-black">
+                              {request.completed
+                                ? "Mark as Incomplete"
+                                : "Mark as Complete"}
+                            </span>
+                          </a>
+                          <a
+                            href="#_"
                             onClick={() =>
                               handleOpen(
                                 request.name,
@@ -193,9 +260,14 @@ const LearningPath = () => {
                                 request.id
                               )
                             }
+                            className="landing-page-button relative inline-flex items-center justify-start px-1 py-1 overflow-hidden font-medium transition-all bg-costum hover:bg-white group border-black border-2 hover:border-black rounded-r-xl"
                           >
-                            Explore more
-                          </Button>
+                            <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                            <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-black">
+                              Explore this instruction
+                            </span>
+                          </a>
+                        </div>
                         </div>
                         <Modal
                           open={open}

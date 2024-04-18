@@ -8,6 +8,13 @@ const addLearningPath = async (Id:number, body: any) => {
       options: { method: "POST" },
     });
   };
+
+  const changeCompletedStatus = async (learningPathId:number) => {
+    return await baseQuery({
+      endpoint: `learningPaths/${learningPathId}`, // Correctly construct the endpoint with userId
+      options: { method: "POST" },
+    });
+  }
   
   
 
@@ -25,4 +32,4 @@ const deleteLearningPath = async (id: number) => {
   });
 };
 
-export { addLearningPath, getLearningPath, deleteLearningPath };
+export { addLearningPath, getLearningPath, deleteLearningPath, changeCompletedStatus };

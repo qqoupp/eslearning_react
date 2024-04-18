@@ -14,7 +14,7 @@ const LandingPage2 = () => {
   }, []);
 
   return (
-    <div className="p-28 text-center">
+    <div className="p-5 pt-20 text-center">
       <Fade in={animationReady} timeout={500}>
         <div className="landing-page-text">
           <Typography variant="h3">
