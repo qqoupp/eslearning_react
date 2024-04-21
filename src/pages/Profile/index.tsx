@@ -2,12 +2,20 @@ import React, { useEffect, useState } from "react";
 import { UserContext } from "../../providers/userProvider";
 import Avatar from "@material-ui/core/Avatar";
 import { getUserRequests } from "../../api/userRequest";
-import { List, ListItem, Paper, Typography } from "@material-ui/core";
+import { Fade, List, ListItem, Paper, Typography } from "@material-ui/core";
 import { deleteUserRequest } from "../../api/userRequest";
 
 const Profile = () => {
   const { user } = React.useContext(UserContext);
   const [userRequests, setUserRequests] = useState<UserRequest[]>([]);
+  const [animationReady, setAnimationReady] = useState(false);
+
+  useEffect(() => {
+    // After the component mounts, set a timeout to enable animation
+    setTimeout(() => {
+      setAnimationReady(true);
+    }, 100);
+  }, []);
 
   interface UserRequest {
     id: number;
@@ -44,38 +52,44 @@ const Profile = () => {
 
   return (
     <div className="flex justify-center">
-      <Paper
-        elevation={3}
+      <div
         style={{
           width: "1000px",
           maxHeight: "1500px",
           padding: "20px",
           margin: "20px",
-          backgroundColor: "rgba(255, 255, 255, 0.6)",
           overflow: "auto",
         }}
       >
-        <Avatar style={{ backgroundColor: "#001524" }}>
-          {user?.username[0].toUpperCase()}
-        </Avatar>
-        <h1 className="text-3xl text-center font-semibold my-7 pr-12">
-          Username : {user?.username}
-        </h1>
-        <h1 className="text-3xl text-center font-semibold my-7 pr-12">
-          Email : {user?.email}
-        </h1>
-        <h1 className="text-3xl text-center font-semibold my-7 pr-12">
-          Joined on : {user?.createdAt.slice(0, 10)}
-        </h1>
-        <Typography variant="h4" className="pl-4">
-          History
-        </Typography>
+        <Fade in={animationReady} timeout={500}>
+        <div className="flex flex-row justify-between p-6">
+          <Avatar style={{ backgroundColor: "#001524" }}>
+            {user?.email[0].toUpperCase()}
+          </Avatar>
+          <h1 className="text-2xl text-center font-semibold ">
+            Email: {user?.email}
+          </h1>
+          <h1 className="text-2xl text-center font-semibold ">
+            Joined on: {user?.createdAt.slice(0, 10)}
+          </h1>
+        </div>
+        </Fade>
+        <Fade in={animationReady} timeout={2000}>
         <List>
           {userRequests &&
             userRequests.length > 0 &&
             userRequests.map((request) => (
               <ListItem key={request.id}>
-                <div className="border-2 pt-1 pr-1 pl-1 border-black">
+                <Paper
+                  elevation={3}
+                  style={{
+                    width: "1000px",
+                    maxHeight: "1500px",
+                    padding: "20px",
+                    backgroundColor: "rgba(255, 255, 255, 0.6)",
+                    overflow: "auto",
+                  }}
+                >
                   <span className="font-bold text-lg">
                     Date and time of creation:{" "}
                   </span>
@@ -102,14 +116,6 @@ const Profile = () => {
                     {request.input}
                   </Typography>
                   <br />
-                  <span className="font-bold text-lg">
-                    Generated project guide:{" "}
-                  </span>
-                  <br />
-                  <Typography component="span" variant="body1">
-                    {request.output}
-                  </Typography>
-                  <br />
                   <div className="p-1 flex flex-row justify-between">
                     <div></div>
                     <div></div>
@@ -120,11 +126,12 @@ const Profile = () => {
                       Delete
                     </button>
                   </div>
-                </div>
+                </Paper>
               </ListItem>
             ))}
         </List>
-      </Paper>
+        </Fade>
+      </div>
     </div>
   );
 };

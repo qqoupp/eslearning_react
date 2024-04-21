@@ -11,8 +11,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ technologies, onSelectionChan
   return (
     <Autocomplete
       sx={{
-        m: 1, 
-        width: 500, 
+        width: "100%", 
         "& .MuiOutlinedInput-root": {
           color: "black",
           "& fieldset": {

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
 import { register } from "../../api/userApi";
+import { Fade } from "@material-ui/core";
 
 const SignUp = () => {
   const toast = useToast();
@@ -13,8 +14,22 @@ const SignUp = () => {
   });
   const [error, setError] = useState<string | null>("");
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [animationReady, setAnimationReady] = useState(false);
+
+  useEffect(() => {
+    // After the component mounts, set a timeout to enable animation
+    setTimeout(() => {
+      setAnimationReady(true);
+    }, 100);
+  }, []);
 
   const navigate = useNavigate();
+
+  const isValidPassword = (password: string) => {
+    // Define password requirements
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleChange = (e: { target: { id: any; value: any } }) => {
     setFormData({
@@ -22,43 +37,48 @@ const SignUp = () => {
       [e.target.id]: e.target.value,
     });
   };
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setDisabled(true);
+    
     try {
       const data = await register(formData);
       console.log(data);
-      if (data.success === false) {
+
+      if (data.error && data.error.name === "SequelizeUniqueConstraintError") {
+        // Handling unique constraint error for email
+        setError("The email address is already in use.");
+        toast.error("The email address is already in use.");
+        setDisabled(false);
+      }else if (!isValidPassword(formData.password)) {
+        setError('Password must be at least 8 characters long and include at least one number, one uppercase letter, one lowercase letter, and one special character.');
+        setDisabled(false);
+        toast.error("Password must be at least 8 characters long and include at least one number, one uppercase letter, one lowercase letter, and one special character.");
+        return; 
+      }else if (data.success === false) {
         setError(data.message);
         setDisabled(false);
-        return;
-      }
-      setError(null);
-
-      toast.success("Account created successfully");
-
-      setTimeout(() => {
-        navigate("/signin");
-      }, 1000);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
       } else {
-        setError("An unexpected error occurred");
+        setError(null);
+        toast.success("Account created successfully");
+        setTimeout(() => {
+          navigate("/signin");
+        }, 1000);
       }
+    } catch (error) {
+      console.error('Registration error:', error);
+      setError("An unexpected error occurred during registration.");
+      setDisabled(false);
     }
-  };
+};
+
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7 pr-12">Sign Up</h1>
+      <Fade in={animationReady} timeout={500}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 pr-12">
-        <input
-          type="username"
-          placeholder="username"
-          className="border p-3 rounded-lg"
-          id="username"
-          onChange={handleChange}
-        />
+      <h1 className="text-3xl text-center font-semibold my-7 pr-12">Sign Up</h1>
+
         <input
           type="email"
           placeholder="email"
@@ -90,12 +110,15 @@ const SignUp = () => {
           </button>
         </div>
       </form>
+      </Fade>
+      <Fade in={animationReady} timeout={2000}>
       <div className="flex gap-2 mt-5">
         <p>Have an account?</p>
         <Link to={"/signin"}>
           <span className="text-blue-700">Sign in</span>
         </Link>
       </div>
+      </Fade>
     </div>
   );
 };

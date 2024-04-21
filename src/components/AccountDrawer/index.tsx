@@ -52,14 +52,14 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                     <div>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/signin")}
                       >
                         Sign In
                       </ListItem>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/signup")}
                       >
                         Sign Up
@@ -70,30 +70,20 @@ const AccountDrawer: React.FC<NavigationDrawerProps> = ({ open, setOpen }) => {
                     <div>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/profile")}
                       >
                         Profile
                       </ListItem>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={logout}
                       >
                         Sign Out
                       </ListItem>
                     </div>
                   )}
-                  <ListItem
-                    button
-                    className="text-xl gap-y-5"
-                    onClick={() => handleNavigate("/about")}
-                  >
-                    About
-                  </ListItem>
-                  <ListItem button className="text-xl gap-y-5">
-                    Contact
-                  </ListItem>
                 </List>
               </div>
             </div>

@@ -14,7 +14,7 @@ const LandingPage2 = () => {
   }, []);
 
   return (
-    <div className="p-28 text-center">
+    <div className="p-5 pt-20 text-center">
       <Fade in={animationReady} timeout={500}>
         <div className="landing-page-text">
           <Typography variant="h3">
@@ -29,28 +29,26 @@ const LandingPage2 = () => {
       <div className="flex justify-center gap-1 pt-20">
           <Link to={"/learningpath"}>
           <Fade in={animationReady} timeout={500}>
-            <a
-              href="#_"
+            <button
               className="landing-page-button relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-costum group border-black border-2 rounded-l-xl hover:bg-white hover:border-black"
             >
               <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 right-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 mr-9 group-hover:mr-0 group-hover:mb-32 group-hover:translate-x-0"></span>
               <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-black">
                 View Your Learning Path
               </span>
-            </a>
+            </button>
           </Fade>
           </Link>
         <Link to={"/guide"}>
           <Fade in={animationReady} timeout={500}>
-            <a
-              href="#_"
+            <button
               className="landing-page-button relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-costum hover:bg-white group border-black border-2 hover:border-black rounded-r-xl"
             >
               <span className="w-48 h-48 rounded rotate-[-40deg] bg-white absolute bottom-0 left-0 -translate-x-full ease-out duration-500 transition-all translate-y-full mb-15 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
               <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-black">
                 Create New Learning Path
               </span>
-            </a>
+            </button>
           </Fade>
         </Link>
       </div>

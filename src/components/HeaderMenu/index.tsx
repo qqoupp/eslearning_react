@@ -15,7 +15,7 @@ const HeaderMenu = (props:HeaderMenuProps) => {
         <div className="flex justify-between cursor-pointer pt-8 pl-8"
             onClick={onClick}
         >   
-            {open ? <Close /> : <MenuIcon/>}
+            {open ? <Close /> : <MenuIcon fontSize="large"/>}
             
         </div>
     );

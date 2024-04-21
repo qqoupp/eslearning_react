@@ -10,12 +10,13 @@ const Logo = (props: SVGProps<SVGSVGElement>) => {
   };
 
   return (
+    <div style={{ width: '10vw', maxWidth: '100px', minWidth: '50px', minHeight: '50px' }}> 
     <svg
     xmlns="http://www.w3.org/2000/svg"
     width={85}
     height={85}
     onClick={handleLogoClick}
-    style={{ cursor: "pointer" }}
+    style={{ cursor: "pointer", width: '100%', height: 'auto' }} 
     viewBox="0 0 370 290"
     {...props}
   >
@@ -35,7 +36,7 @@ const Logo = (props: SVGProps<SVGSVGElement>) => {
       d="m8.465 63.402 11.25-15 11.25 15"
     />
   </svg>
-
+  </div>
   );
 };
 

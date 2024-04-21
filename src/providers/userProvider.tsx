@@ -2,14 +2,12 @@ import React, { createContext } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { accessTokenVerification, refreshToken } from "../api/tokenApi";
-import useToast from "../hooks/useToast";
 import { toast } from "react-toastify";
 
 type User = {
   id: number;
   email: string;
   password: string;
-  username: string;
   createdAt: string;
 };
 
