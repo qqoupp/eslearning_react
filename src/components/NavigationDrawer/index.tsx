@@ -49,48 +49,44 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                     <div>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/guide")}
                       >
-                        Project Guide
+                        New Learning Path
                       </ListItem>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
+                        onClick={() => handleNavigate("/learningpath")}
+                      >
+                        View Learning Path
+                      </ListItem>
+                      <ListItem
+                        button
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/project")}
                       >
-                        Project Ideea
+                        Browse Project Ideas
                       </ListItem>
                     </div>
                   ) : (
                     <div>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/signin")}
                       >
                         Sign In
                       </ListItem>
                       <ListItem
                         button
-                        className="text-xl gap-y-5"
+                        className="text-xl gap-y-5 hover:scale-105 transition-transform"
                         onClick={() => handleNavigate("/signup")}
                       >
                         Sign Up
                       </ListItem>
                     </div>
                   )}
-
-                  <ListItem
-                    button
-                    className="text-xl gap-y-5"
-                    onClick={() => handleNavigate("/about")}
-                  >
-                    About
-                  </ListItem>
-                  <ListItem button className="text-xl gap-y-5">
-                    Contact
-                  </ListItem>
                 </List>
               </div>
             </div>

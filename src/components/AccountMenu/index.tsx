@@ -28,7 +28,7 @@ const AccountMenu = (props: AccountMenuProps) => {
         <Close />
       ) : (
         <Avatar style={{ backgroundColor: "#001524" }}>
-          {user?.username[0].toUpperCase()}
+          {user?.email[0].toUpperCase()}
         </Avatar>
       )}
     </div>

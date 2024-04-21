@@ -2,12 +2,20 @@ import React, { useEffect, useState } from "react";
 import { UserContext } from "../../providers/userProvider";
 import Avatar from "@material-ui/core/Avatar";
 import { getUserRequests } from "../../api/userRequest";
-import { List, ListItem, Paper, Typography } from "@material-ui/core";
+import { Fade, List, ListItem, Paper, Typography } from "@material-ui/core";
 import { deleteUserRequest } from "../../api/userRequest";
 
 const Profile = () => {
   const { user } = React.useContext(UserContext);
   const [userRequests, setUserRequests] = useState<UserRequest[]>([]);
+  const [animationReady, setAnimationReady] = useState(false);
+
+  useEffect(() => {
+    // After the component mounts, set a timeout to enable animation
+    setTimeout(() => {
+      setAnimationReady(true);
+    }, 100);
+  }, []);
 
   interface UserRequest {
     id: number;
@@ -53,9 +61,10 @@ const Profile = () => {
           overflow: "auto",
         }}
       >
+        <Fade in={animationReady} timeout={500}>
         <div className="flex flex-row justify-between p-6">
           <Avatar style={{ backgroundColor: "#001524" }}>
-            {user?.username[0].toUpperCase()}
+            {user?.email[0].toUpperCase()}
           </Avatar>
           <h1 className="text-2xl text-center font-semibold ">
             Email: {user?.email}
@@ -64,6 +73,8 @@ const Profile = () => {
             Joined on: {user?.createdAt.slice(0, 10)}
           </h1>
         </div>
+        </Fade>
+        <Fade in={animationReady} timeout={2000}>
         <List>
           {userRequests &&
             userRequests.length > 0 &&
@@ -119,6 +130,7 @@ const Profile = () => {
               </ListItem>
             ))}
         </List>
+        </Fade>
       </div>
     </div>
   );

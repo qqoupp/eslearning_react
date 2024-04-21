@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
 import { login } from "../../api/userApi";
+import { Fade } from "@material-ui/core";
 
 
 const SignIn = () => {
@@ -11,6 +12,14 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>("");
   const navigate = useNavigate();
+  const [animationReady, setAnimationReady] = useState(false);
+
+  useEffect(() => {
+    // After the component mounts, set a timeout to enable animation
+    setTimeout(() => {
+      setAnimationReady(true);
+    }, 100);
+  }, []);
 
   const handleChange = (e: { target: { id: any; value: any } }) => {
     setFormData({
@@ -45,10 +54,11 @@ const SignIn = () => {
 
   return (
     <div className="p-3 max-w-lg mx-auto ">
+     <Fade in={animationReady} timeout={500}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 pr-12 ">
       <h1 className="text-3xl text-center font-semibold my-7 pr-12 ">
         Sign In
       </h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 pr-12 ">
         <input
           type="email"
           placeholder="email"
@@ -77,12 +87,15 @@ const SignIn = () => {
           </button>
         </div>
       </form>
+      </Fade>
+      <Fade in={animationReady} timeout={2000}>
       <div className="flex gap-2 mt-5">
         <p>Dont have an account?</p>
         <Link to={"/signup"}>
           <span className="text-blue-700">Sign up</span>
         </Link>
       </div>
+      </Fade>
     </div>
   );
 };

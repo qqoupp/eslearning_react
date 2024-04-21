@@ -11,10 +11,10 @@ const theme = createTheme({
       '@media (min-width:600px)': {
         fontSize: '4rem', // medium screens
       },
-      '@media (min-width:900px)': {
+      '@media (min-width:9320px)': {
         fontSize: '4.5rem', // large screens
       },
-      '@media (min-width:1200px)': {
+      '@media (min-width:1180px)': {
         fontSize: '6rem', // extra large screens
       },
     },
