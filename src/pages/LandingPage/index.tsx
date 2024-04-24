@@ -22,6 +22,7 @@ const LandingPage: React.FC = () => {
   const [cardData, setCardData] = useState<CardDataProps[] | undefined>();
   const myRef = React.useRef<HTMLDivElement>(null);
   const { isLoggedIn } = React.useContext(UserContext);
+  
 
   const [position, setPosition] = useState({
     first: "0%",
@@ -40,6 +41,8 @@ const LandingPage: React.FC = () => {
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
+
+ 
 
   // Extract unique subheaders and create a 'All' category
   const subheaders = useMemo(() => {

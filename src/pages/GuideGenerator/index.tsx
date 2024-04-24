@@ -8,9 +8,11 @@ import { saveUserRequest } from "../../api/userRequest";
 import Image5 from "../../components/Images/index5";
 import { addLearningPath } from "../../api/learningPathApi";
 import { deleteAllLearningPathInstructions } from "../../api/lpInstructionApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { deleteAllLearningPathInstructionsQuery } from "../../api/lpInstructionQueryApi";
+import Label from "../../components/Label/Label";
+import Textfield from "../../components/Textfield/Textfield";
 
 export type TechnologiesProps = {
   name: string;
@@ -36,6 +38,8 @@ const GuideGenerator = () => {
   const [showPaper, setShowPaper] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [animationReady, setAnimationReady] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // After the component mounts, set a timeout to enable animation
@@ -92,6 +96,7 @@ const GuideGenerator = () => {
       const processChunk = async () => {
         const { done, value } = await reader.read();
         if (done) {
+          navigate("/learningpath");
           console.log("Stream completed");
           setText(completeText);
           try {
@@ -128,7 +133,7 @@ const GuideGenerator = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:6300/api/v1/technologies");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}technologies`);
       const data = await response.json();
       setTechnologies(data || []);
     };
@@ -146,56 +151,19 @@ const GuideGenerator = () => {
               <div className="flex flex-col p-4 md:p-10">
                 
                   
-                <Typography
-                  variant="h3"
-                  component="div"
-                  className="flex items-center justify-center"
-                >
-                  Select technologies
-                </Typography>
+                <Label 
+                  text="Select technologies"
+                />
                 <MultiSelect
                   technologies={technologies}
                   onSelectionChange={handleTechnologySelection}
                 />
-                 <Typography
-                  variant="h4"
-                  component="div"
-                  className="flex items-center justify-center pt-3"
-                  
-                >
-                  Describe what you want to build
-                </Typography>
-                <TextField
-                  InputProps={{
-                    rows: 7,
-                    multiline: true,
-                    inputComponent: 'textarea'
-                }}
-                  id="outlined-multiline-static"
-                  variant="outlined"
+                 <Label
+                  text="Describe what you want to build"
+                 />
+                <Textfield
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  sx={{
-                    
-                    "& .MuiOutlinedInput-root": {
-                      color: "black", // Text color
-                      "& fieldset": {
-                        borderColor: "black", // Adjust border color for visibility
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "gray", // Border color on hover
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "black", // Border color when focused
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white", // Label color
-                    },
-                    "& .MuiFormHelperText-root": {
-                      color: "white", // Helper text color
-                    },
-                  }}
+                  setValue={setDescription}
                 />
                 <div className="flex justify-center mt-4">
                   <button

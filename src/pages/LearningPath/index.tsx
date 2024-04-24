@@ -31,6 +31,7 @@ import {
   getLearningPathInstructionsQuery,
 } from "../../api/lpInstructionQueryApi";
 import { ClassNames } from "@emotion/react";
+import Label from "../../components/Label/Label";
 
 const style = {
   position: "absolute",
@@ -52,9 +53,33 @@ const style = {
   },
 } as const;
 
+
+interface InstructionQuery {
+  id: number;
+  learningPathId: number;
+  step: string;
+  solution: string;
+}
+
+interface Instruction {
+  id: number;
+  learningPathId: number;
+  step: string;
+  solution: string;
+}
+
+export type LearningPathType = {
+  id: number;
+  name: string;
+  instruction: string;
+  description: string;
+  output: string;
+  completed: boolean;
+}
+
 const LearningPath = () => {
   const { user } = React.useContext(UserContext);
-  const [learningPath, setLearningPath] = useState<LearningPath[]>([]);
+  const [learningPath, setLearningPath] = useState<LearningPathType[]>([]);
   const [open, setOpen] = React.useState(false);
   const [instructions, setInstructions] = useState<Instruction[]>([]);
   const [instructionQuery, setInstructionQuery] = useState<InstructionQuery[]>(
@@ -68,6 +93,8 @@ const LearningPath = () => {
   const [isFormVisible, setIsFormVisible] = useState(true);
   const [elevation, setElevation] = useState(3);
   const [animationReady, setAnimationReady] = useState(false);
+
+
 
   useEffect(() => {
     // After the component mounts, set a timeout to enable animation
@@ -83,28 +110,7 @@ const LearningPath = () => {
     setDescription("");
   };
 
-  interface InstructionQuery {
-    id: number;
-    learningPathId: number;
-    step: string;
-    solution: string;
-  }
-
-  interface Instruction {
-    id: number;
-    learningPathId: number;
-    step: string;
-    solution: string;
-  }
-
-  interface LearningPath {
-    id: number;
-    name: string;
-    instruction: string;
-    description: string;
-    output: string;
-    completed: boolean;
-  }
+  
 
   const handleQuery = async (
     question: string,
@@ -202,7 +208,6 @@ const LearningPath = () => {
             console.log("Stream completed");
             try {
               const jsonResponse = JSON.parse(completeText);
-              console.log("JSON Response:", jsonResponse);
               const instructionsString = JSON.stringify(jsonResponse.task);
               setInstructionResponse(instructionsString);
               setInstructions(jsonResponse.task);
@@ -235,7 +240,7 @@ const LearningPath = () => {
   useEffect(() => {
     if (user) {
       getLearningPath(user.id)
-        .then((data: LearningPath[]) => {
+        .then((data: LearningPathType[]) => {
           setLearningPath(data);
         })
         .catch((error) => {
@@ -414,8 +419,9 @@ const LearningPath = () => {
                             )}
                             
                     
-                            {isFormVisible && (
+                            {isFormVisible && !isLoading && (
                               <>
+                                <Label text="Uncertain about any of the steps above? Ask a question." />
                                 <TextField
                                   fullWidth
                                   id="outlined-multiline-static"
@@ -506,6 +512,15 @@ const LearningPath = () => {
                                     <Typography variant="body1">
                                       {instruction.solution}
                                     </Typography>
+                                    <button
+                                      onClick={() => {
+                                        setIsFormVisible(true);
+                                        setInstructionQuery([]);
+                                      }}
+                                      className="mt-4 landing-page-button relative inline-flex items-center justify-start px-4 py-2 overflow-hidden font-medium transition-all bg-costum group border-black border-2 rounded-xl hover:bg-white hover:border-black hover:text-black text-white"
+                                    >
+                                      Ask another question
+                                    </button>
                                   </Box>
                                 ))}
 
