@@ -14,7 +14,7 @@ REACT_APP_API_URL=
 ## Run
 ``npm i``
 or
-``npm I --legacy-peer-deps``
+``npm i --legacy-peer-deps``
 
 ``npm start``
 
