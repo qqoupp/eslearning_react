@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
 import { register } from "../../api/userApi";
-import { Fade } from "@material-ui/core";
+import { Fade } from "@mui/material";
 
 const SignUp = () => {
   const toast = useToast();
