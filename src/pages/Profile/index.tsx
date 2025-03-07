@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { UserContext } from "../../providers/userProvider";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "@mui/material/Avatar";
 import { getUserRequests } from "../../api/userRequest";
-import { Fade, List, ListItem, Paper, Typography } from "@material-ui/core";
+import { Fade, List, ListItem, Paper, Typography } from "@mui/material";
 import { deleteUserRequest } from "../../api/userRequest";
 
 const Profile = () => {

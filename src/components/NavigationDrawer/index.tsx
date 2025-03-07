@@ -1,6 +1,6 @@
 import React from "react";
 import { Drawer, List, ListItem, Paper } from "@mui/material";
-import { ClickAwayListener } from "@mui/base/ClickAwayListener";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../providers/userProvider";
 
